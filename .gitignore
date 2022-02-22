@@ -33,3 +33,5 @@
 
 # Vscode compiler settings
 **/.vscode/**
+**/Release
+**/Debug
