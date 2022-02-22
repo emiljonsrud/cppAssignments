@@ -26,11 +26,12 @@ void wordsToFile() {
 void addLineNumbers() {
     /* Må få det til å funke først
     cout << "What file to you wish to add line numbers to?\n>";
-    string fName = "";
     cin >> fName;
     cout << endl;
 
     */
+    string fName = "test_opg1";
+
     ofstream oFile {fName};
     ifstream iFile {fName + "_lines"};
 

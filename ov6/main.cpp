@@ -8,7 +8,7 @@
 
 int main()
 {
-	Menu menu;
+	// Menu menu;
 	
 	/* Testing the menu
 	MenuItem testItem;
