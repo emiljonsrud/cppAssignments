@@ -21,6 +21,7 @@ int main()
 	menu.addItem(testItem);
 	*/
 
+	/*
 	// Exersize 1a
 	MenuItem ex1;
 	ex1.setName("Write words to a file");
@@ -37,12 +38,13 @@ int main()
 	ex1b.setFunction(ex1bfunc);
 
 	menu.addItem(ex1b);
+	*/
 
 
 
 
-
-	menu.activateMenu();
+	cout << "test" << endl;
+	// menu.activateMenu();
 
 
 
