@@ -1,127 +1,105 @@
-# Name of the executable
-EXECUTABLE := program
+# Directories, include, lib,
+!if defined(DEBUG_BUILD)
+LIB_TYPE = Debug
+EXECUTABLE = debug
+BUILDDIR = debug
+!else
+LIB_TYPE = Release
+EXECUTABLE = release
+BUILDDIR = release
+!endif
 
-# Library path
-GRAPH_LIB_DIR := $(HOME)/.config/Code/User/globalStorage/tdt4102ntnu.tdt4102-tools/tdt4102/Graph_lib
-GRAPH_LIB_INCLUDE := $(GRAPH_LIB_DIR)/include
+TDT4102_DIR = "%AppData%/tdt4102/tdt4102"
+GRAPH_LIB_DIR = $(TDT4102_DIR)/Graph_lib
+FLTK_LIB_DIR = $(TDT4102_DIR)/FLTK-1.4/lib/$(LIB_TYPE)
 
-FLTK_DIR := $(HOME)/.config/Code/User/globalStorage/tdt4102ntnu.tdt4102-tools/tdt4102/FLTK
-FLTK_INCLUDE := $(FLTK_DIR)/include
-FLTK_LIB := $(FLTK_DIR)/lib
+GRAPH_LIB_INCLUDE = $(GRAPH_LIB_DIR)/include
+FLTK_INCLUDE = $(TDT4102_DIR)/FLTK-1.4
 
-TDT4102_DIR := $(HOME)/.config/Code/User/globalStorage/tdt4102ntnu.tdt4102-tools/tdt4102/TDT4102
-TDT4102_INCLUDE := $(TDT4102_DIR)
+TDT4102_INCLUDE = $(TDT4102_DIR)/TDT4102
 
-# Output directories
-DEBUG_OUT := Debug
-RELEASE_OUT := Release
+GRAPH_LIB_LIBRARIES = $(GRAPH_LIB_DIR)/lib/$(LIB_TYPE)/*.lib
+FLTK_LIBRARIES = $(FLTK_LIB_DIR)/*.lib
+WIN_LIBRARIES = wsock32.lib comctl32.lib kernel32.lib user32.lib gdi32.lib \
+				winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib \
+				oleaut32.lib uuid.lib odbc32.lib odbccp32.lib
 
-# Use clang as compiler and linker
-# Use C++17 and suppress false positive warnings
-CXX = clang++
-CXXFLAGS = -std=c++17 -Wall -Wno-overloaded-virtual -I$(GRAPH_LIB_INCLUDE) -I$(FLTK_INCLUDE) -I$(TDT4102_INCLUDE)
-LDFLAGS = -L$(FLTK_LIB) 
+# Compiler and linker config
+CXX = clang-cl
+CXXFLAGS = /std:c++17 -TP -m64 -fdiagnostics-absolute-paths /W4 /GR \
+			/DEBUG /INCREMENTAL /nologo /EHsc \
+			-I$(GRAPH_LIB_INCLUDE) \
+			-I$(FLTK_INCLUDE) \
+			-I$(TDT4102_INCLUDE)
+DEBUG = /Od /Ob0 -DWIN32 /MDd /Zi /RTC1
+RELEASE = /O2 /Ob2 -DNDEBUG -DWIN32_LEAN_AND_MEAN /MD
+MACROS = -D_WINDOWS -DNOGDI -D_CRT_SECURE_NO_WARNINGS
+DEBUGLD = /DEBUG /INCREMENTAL /Zi
+RELEASELD = /INCREMENTAL:NO
+LDFLAGS = -m64 $(GRAPH_LIB_LIBRARIES) $(FLTK_LIBRARIES) $(WIN_LIBRARIES)
 LINK = $(CXX)
 
-# fltk-config returns compiler and linker flags needed successfully
-# build fltk programs.
-ifdef DEBUG
-CXXFLAGS += $(shell /bin/bash $(FLTK_DIR)/fltk-config-debug --use-images --cxxflags)
-LDFLAGS += $(shell /bin/bash $(FLTK_DIR)/fltk-config-debug --use-images --ldstaticflags)
-else
-CXXFLAGS += $(shell /bin/bash $(FLTK_DIR)/fltk-config-release --use-images --cxxflags)
-LDFLAGS += $(shell /bin/bash $(FLTK_DIR)/fltk-config-release --use-images --ldstaticflags)
-endif
+!if defined(DEBUG_BUILD)
+CXXFLAGS = $(CXXFLAGS) $(DEBUG)
+LDFLAGS = $(LDFLAGS) $(DEBUGLD)
+!else
+CXXFLAGS = $(CXXFLAGS) $(RELEASE)
+LDFLAGS = $(LDFLAGS) $(RELEASELD)
+!endif
 
-LDFLAGS += -lstdc++fs
+!ifndef EXECUTABLE
+EXECUTABLE = program
+!endif
 
-SOURCES := $(wildcard *.cpp)
-GRAPH_LIB_SOURCES := $(wildcard $(GRAPH_LIB_DIR)/src/*.cpp)
-TDT4102_SOURCES := $(wildcard $(TDT4102_DIR)/src/*.cpp)
+SOURCES = *.cpp
 
-ifdef DEBUG
-CXXFLAGS += -g -ggdb -O0 -DDEBUG
-OUT := $(DEBUG_OUT)
-GRAPH_LIB := Graph_libd
-else
-CXXFLAGS += -O3 -DNDEBUG
-OUT := $(RELEASE_OUT)
-GRAPH_LIB := Graph_lib
-endif
+SOURCES_BUILDDIR = $(BUILDDIR)\\sources
+TDT4102_BUILDDIR = $(BUILDDIR)\\tdt4102
 
-SOUCES_BUILDDIR = $(OUT)/sources
+SOURCES_OBJECTS = $(SOURCES_BUILDDIR)/$(SOURCES:.cpp=.obj)
+TDT4102_OBJECTS = $(TDT4102_BUILDDIR)/AnimationWindow.obj \
+				  $(TDT4102_BUILDDIR)/InputHandler.obj \
+				  $(TDT4102_BUILDDIR)/MoveableImage.obj \
+				  $(TDT4102_BUILDDIR)/ShapeDrawQueue.obj
 
-TDT4102_BUILDDIR = $(OUT)/TDT4102
-TDT4102_OBJECTS = $(TDT4102_BUILDDIR)/AnimationWindow.o $(TDT4102_BUILDDIR)/InputHandler.o $(TDT4102_BUILDDIR)/MoveableImage.o $(TDT4102_BUILDDIR)/ShapeDrawQueue.o
+# Inference rules, etc.
+.SUFFIXES: .obj .cpp
 
-GRAPH_LIB_BUILDDIR = $(OUT)/Graph_lib
-GRAPH_LIB_OBJECTS = $(GRAPH_LIB_BUILDDIR)/Graph.o $(GRAPH_LIB_BUILDDIR)/GUI.o $(GRAPH_LIB_BUILDDIR)/Window.o
+{.}.cpp{$(SOURCES_BUILDDIR)}.obj:
+	if not exist $(SOURCES_BUILDDIR) mkdir $(SOURCES_BUILDDIR)
+	$(CXX) $(CXXFLAGS) /c $< /Fo$(@D)/
 
-OBJECTS := $(SOURCES:%.cpp=$(SOUCES_BUILDDIR)/%.o) $(GRAPH_LIB_OBJECTS) $(TDT4102_OBJECTS)
+$(TDT4102_BUILDDIR):
+	if not exist $(TDT4102_BUILDDIR) mkdir $(TDT4102_BUILDDIR)
 
-$(OUT):
-	mkdir -p $@
+$(TDT4102_BUILDDIR)/AnimationWindow.obj: $(TDT4102_BUILDDIR)
+	$(CXX) $(CXXFLAGS) /c $(TDT4102_INCLUDE)/AnimationWindow.cpp /Fo$(@D)/
 
-# There is probably a better way to do this, but this works without any hassle
-$(TDT4102_BUILDDIR)/AnimationWindow.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(TDT4102_DIR)/AnimationWindow.cpp -o $@
+$(TDT4102_BUILDDIR)/InputHandler.obj: $(TDT4102_BUILDDIR)
+	$(CXX) $(CXXFLAGS) /c $(TDT4102_INCLUDE)/InputHandler.cpp /Fo$(@D)/
 
-$(TDT4102_BUILDDIR)/InputHandler.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(TDT4102_DIR)/InputHandler.cpp -o $@
+$(TDT4102_BUILDDIR)/MoveableImage.obj: $(TDT4102_BUILDDIR)
+	$(CXX) $(CXXFLAGS) /c $(TDT4102_INCLUDE)/MoveableImage.cpp /Fo$(@D)/
 
-$(TDT4102_BUILDDIR)/MoveableImage.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(TDT4102_DIR)/MoveableImage.cpp -o $@
+$(TDT4102_BUILDDIR)/ShapeDrawQueue.obj: $(TDT4102_BUILDDIR)
+	$(CXX) $(CXXFLAGS) /c $(TDT4102_INCLUDE)/ShapeDrawQueue.cpp /Fo$(@D)/
 
-$(TDT4102_BUILDDIR)/ShapeDrawQueue.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(TDT4102_DIR)/ShapeDrawQueue.cpp -o $@
+$(BUILDDIR)/$(EXECUTABLE).exe: $(SOURCES_OBJECTS) $(TDT4102_OBJECTS)
+	$(LINK) $(LDFLAGS) $(SOURCES_OBJECTS) $(TDT4102_OBJECTS) /Fe$@
+	@echo ...
+	@echo Successfully built ./$@
 
-$(GRAPH_LIB_BUILDDIR)/Graph.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(GRAPH_LIB_DIR)/src/Graph.cpp -o $@
+$(EXECUTABLE).exe: $(BUILDDIR)/$(EXECUTABLE).exe
 
-$(GRAPH_LIB_BUILDDIR)/GUI.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(GRAPH_LIB_DIR)/src/GUI.cpp -o $@
-
-$(GRAPH_LIB_BUILDDIR)/Window.o:
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $(GRAPH_LIB_DIR)/src/Window.cpp -o $@
-
-$(SOUCES_BUILDDIR)/%.o: %.cpp
-	mkdir -p ./$(dir $(subst //,/,$@))
-	$(CXX) $(CXXFLAGS) -c $< -o $(subst //,/,$@)
-
-$(OUT)/$(EXECUTABLE): $(OUT) $(OBJECTS)
-	$(LINK) -g $(OBJECTS) -o $@ $(LDFLAGS)
-
-.PHONY: runrelease rundebug
-runrelease: release
-	./$(RELEASE_OUT)/$(EXECUTABLE)
-rundebug: debug
-	./$(DEBUG_OUT)/$(EXECUTABLE)
-
-.PHONY: clean cleandebug cleanrelease
-clean: cleandebug cleanrelease
-cleandebug:
-	$(RM) $(DEBUG_OUT)/$(EXECUTABLE)
-	$(RM) -r $(DEBUG_OUT)/sources
-cleanrelease:
-	$(RM) $(RELEASE_OUT)/$(EXECUTABLE)
-	$(RM) -r $(RELEASE_OUT)/sources
-
-# Helpers to build release and debug binaries
-.PHONY: debug release
-debug:
-	DEBUG=1 $(MAKE) $(DEBUG_OUT)/$(EXECUTABLE)
-release:
-	$(MAKE) $(RELEASE_OUT)/$(EXECUTABLE)
-
-
-# Helper to clean console
-.PHONY: clearscreen
-clearscreen:
-	clear
+# Catch-all, but can interfere with student's own files in build directory
+#rmdir /s /q $(BUILDDIR)
+clean:
+	@echo Cleaning the output files in $(BUILDDIR)
+	-del $(BUILDDIR)\$(EXECUTABLE).exe 2> NUL
+	-del $(BUILDDIR)\$(EXECUTABLE).pdb 2> NUL
+	-del $(BUILDDIR)\$(EXECUTABLE).ilk 2> NUL
+	-del $(SOURCES_BUILDDIR)\*.obj 2> NUL
+	if exist $(SOURCES_BUILDDIR) rmdir $(SOURCES_BUILDDIR)
+cleanall: cleandebug
+	-del $(TDT4102_BUILDDIR)\*.obj 2> NUL
+	if exist $(TDT4102_BUILDDIR) rmdir $(TDT4102_BUILDDIR)
