@@ -3,12 +3,13 @@
 
 void wordsToFile() {
     cout << "What file to you wish to write to?\n>";
-    string ofName = "";
-    cin >> ofName;
+    string fName = "";
+    cin >> fName;
     cout << endl;
-    ofstream oFile {ofName};
+    string input_directory = "input_files/";
+    ofstream oFile {input_directory + fName};
 
-    if (!oFile) error("Error: can't open file", ofName);
+    if (!oFile) error("Error: can't open file", fName);
 
     cout << "Please insert the words you whish to save to a file."
     << "\nTo exit, type «quit»." << endl;
@@ -29,13 +30,14 @@ void addLineNumbers() {
     cin >> fName;
     cout << endl;
 
+    string input_directory = "input_files/";
 
-    ifstream iFile {fName};
-    ofstream oFile {fName + "_lines"};
+    ifstream iFile {input_directory + fName};
+    ofstream oFile {input_directory + fName + "_lines"};
 
     if (!iFile or !oFile) error("Error: can't open file", fName);
 
-    // vector<string> words = "";
+    
     string line = "";
     int  i = 0;
 
