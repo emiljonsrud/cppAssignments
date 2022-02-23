@@ -3,6 +3,7 @@
 #include "Menu.h"
 
 #include "exersize1.h"
+#include "exersize2.h"
 
 
 
@@ -39,14 +40,21 @@ int main()
 
 	menu.addItem(ex1b);
 	
+	// Exersize 2
+	MenuItem ex2a;
+	ex2a.setName("View character stats for a file");
+	
+	function<void()> ex2afunc = []() {
+		charStat();
+	};
+	ex2a.setFunction(ex2afunc);
+
+	menu.addItem(ex2a);
 
 
 
-
-	cout << "test" << endl;
+	
 	menu.activateMenu();
-
-
 
 
 }

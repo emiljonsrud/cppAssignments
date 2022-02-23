@@ -44,6 +44,5 @@ void addLineNumbers() {
     while( getline(iFile, line) ) {
         oFile << i << " " << line << endl;
         i++;
-
     }
 }

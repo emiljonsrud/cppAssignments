@@ -12,7 +12,8 @@ void charToLower(char &c) {
         (c + intervall < lower or c + intervall > upper)
         ) {
             string errMsg = "This is not a letter Aa-Zz: ";
-            throw invalid_argument(errMsg.push_back(c));
+            errMsg.push_back(c);
+            throw std::invalid_argument(errMsg);
     }
     else if (c < lower) {
         c += intervall;
@@ -28,4 +29,17 @@ map<char, int> generateAlphabet() { //char is the key, and int is char-count
         alphabet.insert({i, 0});
     }
     return alphabet;
+}
+
+void printCharacterTable(map<char, int> charTable) {
+    int i = 1;
+    for (auto c : charTable) {
+        cout << setw(8);
+        cout << c.first << ": " << c.second;
+        if (i%3==0) {
+            cout << endl;
+        }
+        i++;
+    }
+    cout << endl;
 }
