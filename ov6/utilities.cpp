@@ -1,6 +1,12 @@
 #include "std_lib_facilities.h"
 #include "utilities.h"
 
+string inpFileName() {
+    string fName = "";
+    cout << "What file do you want to view character stats on?\n> ";
+    cin >> fName;
+    return fName;
+}
 
 void charToLower(char &c) {
     char lower = 'a';
@@ -34,8 +40,12 @@ map<char, int> generateAlphabet() { //char is the key, and int is char-count
 void printCharacterTable(map<char, int> charTable) {
     int i = 1;
     for (auto c : charTable) {
-        cout << setw(8);
-        cout << c.first << ": " << c.second;
+
+        cout << right << setw(10) << setfill(' ');
+        cout // << left << setw(10) << setfill(' ') 
+        << c.first << ":" << right << setw(4) << setfill(' ')
+        << c.second;
+
         if (i%3==0) {
             cout << endl;
         }
