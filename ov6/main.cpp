@@ -8,7 +8,7 @@
 
 int main()
 {
-	// Menu menu;
+	Menu menu;
 	
 	/* Testing the menu
 	MenuItem testItem;
@@ -21,7 +21,7 @@ int main()
 	menu.addItem(testItem);
 	*/
 
-	/*
+	
 	// Exersize 1a
 	MenuItem ex1;
 	ex1.setName("Write words to a file");
@@ -38,13 +38,13 @@ int main()
 	ex1b.setFunction(ex1bfunc);
 
 	menu.addItem(ex1b);
-	*/
+	
 
 
 
 
 	cout << "test" << endl;
-	// menu.activateMenu();
+	menu.activateMenu();
 
 
 

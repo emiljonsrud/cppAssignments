@@ -33,7 +33,7 @@ void Menu::selectItem() {
     cin >> inpChoice;
 
     if (inpChoice == 0) {showMenu = false;}
-    if (inpChoice < 0 or inpChoice > menu.size()) {
+    if  ( (inpChoice < 0) or (inpChoice > static_cast<int>(menu.size())) ) {
         cout << "Please insert a valid integer" << endl;
         goto input;
     } else {

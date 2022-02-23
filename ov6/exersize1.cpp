@@ -24,27 +24,24 @@ void wordsToFile() {
 }
 
 void addLineNumbers() {
-    /* Må få det til å funke først
     cout << "What file to you wish to add line numbers to?\n>";
+    string fName = "";
     cin >> fName;
     cout << endl;
 
-    */
-    string fName = "test_opg1";
 
-    ofstream oFile {fName};
-    ifstream iFile {fName + "_lines"};
+    ifstream iFile {fName};
+    ofstream oFile {fName + "_lines"};
 
     if (!iFile or !oFile) error("Error: can't open file", fName);
 
+    // vector<string> words = "";
     string line = "";
-    if (iFile.good()) {
-        int i = 0;
-        while (getline(iFile, line).good()) {
-            oFile << i << " " << line << endl;
-            i++;
-        }
-    }
-       
+    int  i = 0;
 
+    while( getline(iFile, line) ) {
+        oFile << i << " " << line << endl;
+        i++;
+
+    }
 }
