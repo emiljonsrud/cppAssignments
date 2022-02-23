@@ -21,11 +21,18 @@ enum class Rank{
     king = 13,
     ace = 14
 };
+
+
 class Card{
 private:
-    Suit s;
-    
-}
+    Suit suit;
+    Rank rank;
+public:
+    Card(Suit s, Rank r);
+    Suit getSuit();
+    Rank getRank();
+    string toString();
+};
 
 
 string suitToString(Suit suit);
