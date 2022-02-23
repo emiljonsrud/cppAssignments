@@ -1,6 +1,7 @@
 #include "std_lib_facilities.h"
 #include "MenuItem.h"
 #include "Menu.h"
+#include <functional>
 
 Menu::Menu() {
     MenuItem quit;
