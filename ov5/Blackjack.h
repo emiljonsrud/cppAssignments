@@ -6,6 +6,8 @@
 #include "Options.h"
 #include "BankAccount.h"
 
+// dette er fra thinkboi
+
 
 class Blackjack {
     private:

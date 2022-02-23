@@ -8,6 +8,8 @@
 
 #include <unistd.h>
 
+// dette er fra thinkboi
+
 Blackjack::Blackjack() {
     deck.shuffle();
     dealNewCards();
