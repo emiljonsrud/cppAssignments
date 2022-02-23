@@ -6,55 +6,95 @@
     "configurations": [
         {
             "name": "Build and Run Debug w/ Integrated Terminal",
-            "type": "cppvsdbg",
+            "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/debug/debug.exe",
+            "program": "${workspaceFolder}/Debug/program",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-            "preLaunchTask": "Build Debug Executable",
-            "logging": {"moduleLoad": false},
-            "visualizerFile": "${env:VCINSTALLDIR}/../Common7/Packages/Debugger/Visualizers/stl.natvis"
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "logging": {
+                "moduleLoad": false
+            },
+            "preLaunchTask": "Build Debug Executable"
         },
         {
             "name": "Build and Run Release w/ Integrated Terminal",
-            "type": "cppvsdbg",
+            "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/release/release.exe",
+            "program": "${workspaceFolder}/Release/program",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal",
-            "preLaunchTask": "Build Release Executable",
-            "logging": {"moduleLoad": false}
-
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "logging": {
+                "moduleLoad": false
+            },
+            "preLaunchTask": "Build Release Executable"
         },
         {
             "name": "Build and Run Debug w/ External Terminal",
-            "type": "cppvsdbg",
+            "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/debug/debug.exe",
+            "program": "${workspaceFolder}/Debug/program",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "console": "externalTerminal",
-            "preLaunchTask": "Build Debug Executable",
-            "logging": {"moduleLoad": false},
-            "visualizerFile": "${env:VCINSTALLDIR}/../Common7/Packages/Debugger/Visualizers/stl.natvis"
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "logging": {
+                "moduleLoad": false
+            },
+            "preLaunchTask": "Build Debug Executable"
         },
         {
             "name": "Build and Run Release w/ External Terminal",
-            "type": "cppvsdbg",
+            "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/release/release.exe",
+            "program": "${workspaceFolder}/Release/program",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "console": "externalTerminal",
-            "preLaunchTask": "Build Release Executable",
-            "logging": {"moduleLoad": false}
-
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "logging": {
+                "moduleLoad": false
+            },
+            "preLaunchTask": "Build Release Executable"
         }
     ]
 }
