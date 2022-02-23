@@ -6,7 +6,7 @@ void wordsToFile() {
     string fName = "";
     cin >> fName;
     cout << endl;
-    string input_directory = "input_files/";
+    string input_directory = "text_files/";
     ofstream oFile {input_directory + fName};
 
     if (!oFile) error("Error: can't open file", fName);
@@ -30,7 +30,7 @@ void addLineNumbers() {
     cin >> fName;
     cout << endl;
 
-    string input_directory = "input_files/";
+    string input_directory = "text_files/";
 
     ifstream iFile {input_directory + fName};
     ofstream oFile {input_directory + fName + "_lines"};

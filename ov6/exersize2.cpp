@@ -10,22 +10,23 @@ auto getStream(string fDir, string fName) {
         string errMsg = "Can't open file: " + fDir + fName;
         throw std::invalid_argument(errMsg);
     }
-    return iFile
+    return iFile;
 }
 
 
 void charStat() {
-    string fDir = "input_filed/";
+    string fDir = "text_files/";
    
 inpName: ;
     string fName = inpFileName();
     
     try {
-        getStream(fDir, fName)
+        getStream(fDir, fName);
     } catch (std::invalid_argument fNameErr) {
         cout << "An error occured: " << fNameErr.what() << endl;
         goto inpName;
     }
+    auto iFile = getStream(fDir, fName);
 
 
     string line = "";
@@ -39,11 +40,11 @@ inpName: ;
     for (char c : allLines) {
         try{
             charToLower(c);
+            auto mapPair = charactertStats.find(c);
+            mapPair -> second ++;
         } catch(std::invalid_argument argExeption) {
             cout << "An error occured: " << argExeption.what() << endl;
         }
-        auto mapPair = charactertStats.find(c);
-        mapPair -> second ++;
         // cout << charactertStats.at(c) << endl;
     }
     printCharacterTable(charactertStats);
