@@ -31,8 +31,13 @@
 *.out
 *.app
 
-# Vscode compiler settings
+# Compilation settings
 **/.vscode
 **/Release
 **/Debug
 **/Makefile
+
+# Handin file
+**/handin.zip
+
+
