@@ -48,6 +48,7 @@ void Menu::addItem(MenuItem m) {
 }
 void Menu::activateMenu() {
     while (showMenu) {
+        cout << endl;
         printMenu();
         selectItem();
     }
