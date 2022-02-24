@@ -13,10 +13,12 @@ void CourseCatalog::addCourse(string courseCode, string courseName) {
     course.insert({courseCode, courseName});
 }
 
-ostream& operator<<(ostream& os, CourseCatalog& c) {
-    os << "Course code: " << c.course.first << endl;
+std::ostream& operator<<(std::ostream& os, const CourseCatalog& c)
+{
+    os << "Course code: " << c.course  << endl;
     return os;
 }
+
 
 void CourseCatalog::removeCourse(string courseCode) {
     course.erase(courseCode);

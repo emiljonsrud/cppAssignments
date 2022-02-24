@@ -7,7 +7,7 @@ private:
 
 public:
     CourseCatalog(map<string, string> course);
-    friend std::ostream& operator<<(std::ostream& os, const CourseCatalog& c);
+    friend ostream& operator<<(std::ostream& os, const CourseCatalog& c);
 
     void addCourse(string courseCode, string courseName);
     void removeCourse(string courseCode);
