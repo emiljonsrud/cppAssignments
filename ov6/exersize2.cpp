@@ -3,21 +3,11 @@
 #include "MenuItem.h"
 #include "utilities.h"
 
-auto getStream(string fDir, string fName) {
-    
-    ifstream iFile {fDir + fName};
-    if (!iFile) {
-        string errMsg = "Can't open file: " + fDir + fName;
-        throw std::invalid_argument(errMsg);
-    }
-    return iFile;
-}
-
-
 void charStat() {
     string fDir = "text_files/";
    
 inpName: ;
+    cout << "What file do you want to view character stats on?";
     string fName = inpFileName();
     
     try {
@@ -57,6 +47,7 @@ const map<string, string> capitalsMap {
     {"Sweden", "Stockholm"},
     {"Denmark", "Copenhagen"}
 };
+
 string getCapital(const string& country) {
     return capitalsMap.find(country) -> second;
 }

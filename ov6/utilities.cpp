@@ -3,10 +3,22 @@
 
 string inpFileName() {
     string fName = "";
-    cout << "What file do you want to view character stats on?\n> ";
+    cout << "\n> ";
     cin >> fName;
     return fName;
+    cout << endl;
 }
+
+ifstream getStream(string fDir, string fName) {
+    
+    ifstream iFile {fDir + fName};
+    if (!iFile) {
+        string errMsg = "Can't open file: " + fDir + fName;
+        throw std::invalid_argument(errMsg);
+    }
+    return iFile;
+}
+
 
 void charToLower(char &c) {
     char lower = 'a';

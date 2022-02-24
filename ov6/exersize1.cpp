@@ -1,11 +1,11 @@
 #include "std_lib_facilities.h"
 #include "exersize1.h"
+#include "utilities.h"
 
 void wordsToFile() {
-    cout << "What file to you wish to write to?\n>";
-    string fName = "";
-    cin >> fName;
-    cout << endl;
+    cout << "What file to you wish to write to?";
+    string fName = inpFileName();
+
     string input_directory = "text_files/";
     ofstream oFile {input_directory + fName};
 
@@ -25,19 +25,21 @@ void wordsToFile() {
 }
 
 void addLineNumbers() {
-    cout << "What file to you wish to add line numbers to?\n>";
-    string fName = "";
-    cin >> fName;
-    cout << endl;
+    string fDir = "text_files/";
 
-    string input_directory = "text_files/";
+input: ;
+    cout << "What file to you wish to add line numbers to?";
+    string fName = inpFileName();
+    try {
+        getStream(fDir, fName);
+    } catch (std::invalid_argument fNameExeption) {
+        cout << "An error occured: " << fNameExeption.what() << endl;
+        goto input;
+    }
 
-    ifstream iFile {input_directory + fName};
-    ofstream oFile {input_directory + fName + "_lines"};
+    ifstream iFile = getStream(fDir, fName);
+    ofstream oFile {fDir + fName + "_lines"};
 
-    if (!iFile or !oFile) error("Error: can't open file", fName);
-
-    
     string line = "";
     int  i = 0;
 
