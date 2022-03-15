@@ -9,9 +9,10 @@ protected:
     int age;
 
 public:
-    Animal(string n, int a);
-    virtual ~Animal() {};
+    Animal(string n = "Name", int a = 0);
     virtual string toString();
+
+    virtual ~Animal() {};
 
 };
 
@@ -22,7 +23,9 @@ private:
 public:
     Cat(string n, int a);
     string toString();
+
 };
+
 class Dog : public Animal {
 private:
 

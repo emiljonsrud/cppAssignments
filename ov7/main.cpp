@@ -3,6 +3,10 @@
 #include "MenuItem.h"
 #include "Menu.h"
 
+#include "exersizeFunctions.h"
+
+#include "Animal.h"
+
 
 
 
@@ -12,11 +16,9 @@ int main()
     Menu menu;
 
     menu.addItem({
-        "test option",
+        "Print animals",
         []() {
-            cout << "this" << endl;
-            cout << "is" << endl;
-            cout << "working" << endl;
+           testAnimal();
         }
     });
 
@@ -27,6 +29,7 @@ int main()
             Protected er tilgjenelig for etterkommere av klassen. (Arvere)
 
     */  
+   
 
     
 
