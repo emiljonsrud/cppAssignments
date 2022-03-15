@@ -6,6 +6,7 @@
 
 
 
+
 int main()
 {
     Menu menu;
@@ -19,9 +20,18 @@ int main()
         }
     });
 
+    //          Oppgave 1
+    /*
+        a)  Public er tilgjengelig globalt for alle funksjoner
+            Private er bare tilgjengelig for medlemsfunksjoner til klassen
+            Protected er tilgjenelig for etterkommere av klassen. (Arvere)
+
+    */  
+
+    
+
+
+
+
     menu.activateMenu();
-
-
-
-
 }
