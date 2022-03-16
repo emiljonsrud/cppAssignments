@@ -10,7 +10,7 @@ protected:
 
 public:
     Animal(string n = "Name", int a = 0);
-    virtual string toString();
+    virtual string toString() = 0;
 
     virtual ~Animal() {};
 
