@@ -2,10 +2,11 @@
 #include "std_lib_facilities.h"
 
 #include "Animal.h"
+
 #include "AnimationWindow.h"
 #include "Emoji.h"
 
-
+//      Oppgave 1
 void testAnimal() {
     // Create an empty vector of Animal types and fill it 
     // cats and dogs 
@@ -24,6 +25,8 @@ void testAnimal() {
     }    
 }
 
+
+//      Oppgave 2
 void testEmoji() {
     // Definer størrelse på vindu og emoji
     constexpr int xmax = 1000;
@@ -34,11 +37,19 @@ void testEmoji() {
 	const string win_label{"Emoji factory"};
 	AnimationWindow win{tl.x, tl.y, xmax, ymax, win_label};
 
-	/* TODO:
-	 *  - initialiser emojiene
-	 *  - Tegn emojiene til vinduet
-	 **/
-
+    Face baseFace {
+        Point {300, 400},
+        100        
+    };
+    
+    HappyFace happy {baseFace};
+	SadFace sad {baseFace};
+    AngryFace angry {sad};
+    WinkFace wink {happy};
+    SurprisedFace surprise {baseFace};
+    
+    surprise.draw(win);
+    
 	win.wait_for_close();
 }
 
