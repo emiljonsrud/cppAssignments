@@ -11,9 +11,10 @@ public:
 
 class Face : public Emoji {
 protected:
-    Point centre;
     int radius;
 public:
+    Point centre;
+
     Face(Point c, int r) : centre{c}, radius{r} {};
     virtual void draw(AnimationWindow& win) override;    
     virtual ~Face(){}; 

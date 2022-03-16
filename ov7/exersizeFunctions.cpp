@@ -42,13 +42,33 @@ void testEmoji() {
         100        
     };
     
+    //  Create empty vector that will contain emojis
+    vector<unique_ptr<Face>> emojis;
+    
+    //  Create emojies
     HappyFace happy {baseFace};
 	SadFace sad {baseFace};
     AngryFace angry {sad};
     WinkFace wink {happy};
     SurprisedFace surprise {baseFace};
-    
-    surprise.draw(win);
+
+    //  Add emojis to the vector of emojis
+    emojis.emplace_back(happy);
+	emojis.emplace_back(sad);
+    emojis.emplace_back(angry);
+    emojis.emplace_back(wink);
+    emojis.emplace_back(surprise);
+    //  Spørsmål til studass: kan du forlkare litt om 
+    // "default contructor does not exis"? 
+
+    //  Iterate through the emojis
+    int position = 200;
+    for (auto const &emoji : emojis) {
+        emoji -> centre = {position, emoji -> centre.y};
+        emoji -> draw(win);
+
+        position += 250;
+    }
     
 	win.wait_for_close();
 }
