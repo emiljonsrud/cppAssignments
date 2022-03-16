@@ -7,17 +7,24 @@ class Emoji{
 public:
     virtual void draw(AnimationWindow&) = 0;
     virtual ~Emoji(){}; //destruktør
+    virtual void setCentreX(int c);
 };
 
 class Face : public Emoji {
 protected:
+    Point centre;
     int radius;
 public:
-    Point centre;
-
+    // Face() : centre{{int{0}, int 0}}, radius{0} {}
     Face(Point c, int r) : centre{c}, radius{r} {};
     virtual void draw(AnimationWindow& win) override;    
     virtual ~Face(){}; 
+
+    void setCentreX(int c) {
+        centre = {c, centre.y};
+    } override;
+
+
        
 };
 
