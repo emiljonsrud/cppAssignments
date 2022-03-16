@@ -29,7 +29,15 @@ int main()
             Protected er tilgjenelig for etterkommere av klassen. (Arvere)
 
     */  
-   
+
+
+    //           Oppgave 2
+    menu.addItem({
+        "Test emoji",
+        []() {
+            testEmoji();
+        }
+    });
 
     
 

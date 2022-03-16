@@ -2,5 +2,5 @@
 
 
 void testAnimal();
-
+void testEmoji();
 
