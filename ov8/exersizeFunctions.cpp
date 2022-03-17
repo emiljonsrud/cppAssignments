@@ -43,7 +43,7 @@ void printArray(int* arr, int length) {
 }
 void createFibonacci() {
     //  Ask user how many Fib-numbers they want
-    std::cout << "How many Fibonacci numbers do you wish?" << std::endl;
+    std::cout << "How many Fibonacci numbers do you wish?\n> " << std::endl;
     int inpLength{0};
     while(!(std::cin >> inpLength) || inpLength < 1) {
         std::cout << "Please insert a positive integer.\n> ";
