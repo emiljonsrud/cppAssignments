@@ -29,9 +29,9 @@ void testAnimal() {
 //      Oppgave 2
 void testEmoji() {
     // Definer størrelse på vindu og emoji
-    constexpr int xmax = 1000;
-    constexpr int ymax = 600;
-    constexpr int emojiRadius = 50;
+    constexpr int xmax = 1300;
+    constexpr int ymax = 300;
+    // constexpr int emojiRadius = 50;
 
     const Point tl{100, 100};
 	const string win_label{"Emoji factory"};
@@ -42,32 +42,42 @@ void testEmoji() {
         100        
     };
     
-    //  Create empty vector that will contain emojis
-    vector<unique_ptr<Emoji>> emojis;
-    Face fjes;
 
     //  Create emojies
-    HappyFace happy {baseFace};
-	SadFace sad {baseFace};
-    AngryFace angry {sad};
-    WinkFace wink {happy};
-    SurprisedFace surprise {baseFace};
+    // HappyFace happy = {baseFace};
+	// SadFace sad {baseFace};
+    // AngryFace angry {sad};
+    // WinkFace wink {happy};
+    // SurprisedFace surprise {baseFace};
+
+    /*
+        Spørsmål til studass:   Hvorfor kan jeg ikke hive en face inn i alle 
+        kontruktørene? De har samme input-argumenter, og kaller på kontruktørene
+        oppåver i familietreet.
+            Se Angry i h-filen, jeg endret til 
+                    AngryFace(Face sad) : SadFace{sad} {};
+                fra
+                    AngryFace(SadFace sad) : SadFace{sad} {};
+            er dette noe man må gjøre når man lager subklasser?
+    */
+
+    //  Create empty vector that will contain emojis
+    vector<unique_ptr<Emoji>> emojis;
 
     //  Add emojis to the vector of emojis
-    emojis.emplace_back(happy);
-	emojis.emplace_back(sad);
-    emojis.emplace_back(angry);
-    emojis.emplace_back(wink);
-    emojis.emplace_back(surprise);
-    //  Spørsmål til studass: kan du forlkare litt om 
-    // "default contructor does not exis"? 
+    emojis.emplace_back(new HappyFace       {Face {Point{300, 150}, int{100}}});
+	emojis.emplace_back(new SadFace         {Face {Point{300, 150}, int{100}}});
+    emojis.emplace_back(new SurprisedFace   {Face {Point{300, 150}, int{100}}});
+    emojis.emplace_back(new AngryFace       {Face {Point{300, 150}, int{100}}});
+    emojis.emplace_back(new WinkFace        {Face {Point{300, 150}, int{100}}});
 
     //  Iterate through the emojis
     int position = 150;
     for (auto const &emoji : emojis) {
-        emoji ->setCentreX(position)
-        emoji ->draw(win);
-        
+        // Point newPoint {position, 200};
+        emoji.get() ->setCentreX(position);
+
+        emoji.get() ->draw(win);
         position += 250;
     }
     

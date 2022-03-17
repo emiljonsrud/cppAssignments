@@ -1,5 +1,6 @@
 #pragma once
 #include "AnimationWindow.h"
+#include "std_lib_facilities.h"
 
 // Abstrakt klasse. Arvende konkrete klasser må implementere funksjonen draw()
 // som tegner former i vinduet de skal bli vist i.
@@ -7,7 +8,14 @@ class Emoji{
 public:
     virtual void draw(AnimationWindow&) = 0;
     virtual ~Emoji(){}; //destruktør
-    virtual void setCentreX(int c);
+
+    virtual void setCentreX(int cx) = 0;
+    //  ^ Kommentar til studass: HVORFOR?!?!
+    //  Nogva trenger ikke deklarere denne setCentreX() i Emoji klassen
+    //  men dersom jeg ikke gjør det, så klager kompilatoren på at Emoji
+    //  ikke har medlemsfunksjonen setCentreX(). Men Face har funkjsonen
+    //  og alle emojiene arver fra Face, så det skal ikke være et problem... :(
+    
 };
 
 class Face : public Emoji {
@@ -15,17 +23,13 @@ protected:
     Point centre;
     int radius;
 public:
-    // Face() : centre{{int{0}, int 0}}, radius{0} {}
-    Face(Point c, int r) : centre{c}, radius{r} {};
+    Face(Point c, int r) : centre{c}, radius{r} {}
     virtual void draw(AnimationWindow& win) override;    
-    virtual ~Face(){}; 
+    virtual ~Face(){};
 
-    void setCentreX(int c) {
-        centre = {c, centre.y};
-    } override;
-
-
-       
+    void setCentreX(int cx) override{
+        centre.x = cx;
+    }
 };
 
 class EmptyFace : public Face {
@@ -54,7 +58,7 @@ public:
 //  Angry
 class AngryFace : public SadFace {
 public:
-    AngryFace(SadFace sad) : SadFace{sad} {};
+    AngryFace(Face sad) : SadFace{sad} {};
     void draw(AnimationWindow& win) override;
 };
 //  Winky
@@ -62,7 +66,7 @@ class WinkFace : public HappyFace {
 public:
     // Spørsmål til studass: Er det dårlig skikk å ha initialiseringslisten i headerfilen?
     // om ikke, er det dårlig å ha denne initialieringen her:
-    WinkFace(HappyFace happy) : HappyFace{happy} {
+    WinkFace(Face happy) : HappyFace{happy} {
         oneEye = true;
     };
     void draw(AnimationWindow& win) override;  
