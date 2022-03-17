@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 #include "exersizeFunctions.h"
+#include "Matrix.h"
 
 int main()
 {
@@ -23,6 +24,16 @@ int main()
             createFibonacci();
         }
     });
+
+    //  Exersize 2
+    menu.addItem(MenuItem{
+        "Test matrix I_4",
+        []() {
+            Matrix A{4};
+            std::cout << A[0][2] << ", " << A[3][3] << std::endl;
+        }
+    });
+
 
 
 

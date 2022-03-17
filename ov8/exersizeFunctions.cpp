@@ -1,14 +1,39 @@
 #include "exersizeFunctions.h"
 
+#include "Matrix.h"
+
 #include <iostream>
 
 
 void testCode() {
     constexpr int tableSize {3};
-    int numTable[tableSize] = {2, 4, 6};
+    // int numTable[tableSize] = {2, 4, 6};
+    // int* numTable = new int[tableSize]{1};
 
-    printArray(numTable, tableSize);
+    // printArray(numTable, tableSize);
 
+    // int nRows = 3;
+    // int nCols = 4;
+    // int** rows = new int*[nRows]{nullptr};
+    // for (int i = 0; i < nCols; i++) {
+    //     int* column = new int[nCols]{0};
+    //     *(rows + i) = column;
+    // }
+    // *(*(rows + 1) + 3) = 1;
+    // printMatrix(rows, nRows, nCols);
+    // for (int i = 0; i < nRows; i++) {
+    //     delete[] *(rows + i);        
+    // }
+    // printMatrix(rows, nRows, nCols);
+    // // delete[] rows;
+    // // std::cout << *(*(rows + 2) + 3) << std::endl;
+
+    
+}
+void printMatrix(int** arr, int nRows, int nCols) {
+    for (int i = 0; i < nRows; i++) {
+        printArray(*(arr+i), nCols);
+    }
 }
 
 

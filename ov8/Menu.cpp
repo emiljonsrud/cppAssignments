@@ -50,6 +50,14 @@ void Menu::selectItem() {
 
 
 //      PUBLIC
+
+//  Add a MenuItem on the form 
+// MenuItem {
+//     "Name",
+//     []() {
+//         /* function contents*/
+//     }
+// }
 void Menu::addItem(MenuItem m) {
     menu.push_back(m);
 }
