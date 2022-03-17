@@ -63,6 +63,7 @@ void Menu::activateMenu() {
             cout << "Error: " << argExeption.what() << endl;
         }
     }
+    cout << "-------- Exiting menu --------\n\n" << endl;
 }
 
 
