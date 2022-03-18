@@ -1,17 +1,16 @@
-#include "std_lib_facilities.h"
-#include <functional>
-
 #include "MenuItem.h"
 
+#include <iostream>
+#include <functional>
 
 
-MenuItem::MenuItem(string n, function<void()> f) {
+MenuItem::MenuItem(std::string n, std::function<void()> f) {
     name = n;
     func = f;
 }
 
 
-string MenuItem::getName() {
+std::string MenuItem::getName() {
     return name;
 }
 

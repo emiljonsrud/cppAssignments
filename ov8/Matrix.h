@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 class Matrix {
 private:
     int height;

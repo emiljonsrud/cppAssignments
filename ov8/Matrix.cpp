@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <iomanip>
 //      PRIVATE
 
 
@@ -45,9 +46,13 @@ Matrix::~Matrix() {
 
 //      Operators
 std::ostream& operator<<(std::ostream& os, Matrix M) {
+    os << '\n';
     for (int i = 0; i < M.getRows(); i++) {
         for (int j = 0; j< M.getColumns(); j++) {
-            // TODO: os the matrix
+            os << std::setw(4) << std::setfill(' ');
+            os << M[i][j];
         }
+        os << std::endl;
     }
+    return os;
 }

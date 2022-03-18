@@ -1,12 +1,12 @@
 #pragma once
-#include "std_lib_facilities.h"
-
 #include "MenuItem.h"
+
+#include <vector>
 
 
 class Menu {
 private:
-    vector<MenuItem> menu;
+    std::vector<MenuItem> menu;
     bool showMenu;
 
     void printMenu();

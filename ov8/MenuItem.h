@@ -1,18 +1,19 @@
 #pragma once
-#include "std_lib_facilities.h"
+
+#include <string>
 #include <functional>
 
 
 class MenuItem {
 private:
-    string name;
-    function<void()>  func;
+    std::string name;
+    std::function<void()>  func;
     
     
 public:
-    MenuItem(string n, function<void()> f);
+    MenuItem(std::string n, std::function<void()> f);
 
-    string getName();
+    std::string getName();
     void execute();
 };
 

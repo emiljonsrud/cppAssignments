@@ -1,14 +1,14 @@
-#include "std_lib_facilities.h"
-#include <functional>
-
 #include "MenuItem.h"
 #include "Menu.h"
+
+#include <iostream>
+#include <functional>
 
 Menu::Menu() {
     MenuItem quit = {
         "Exit menu", 
         []() {
-            cout << "Exiting menu" << endl;
+            std::cout << "Exiting menu" << std::endl;
         }
     };
     menu.push_back(quit);
@@ -21,23 +21,23 @@ Menu::Menu() {
 //      PRIVATE      
 void Menu::printMenu() {
     int menuLength = menu.size();
-    cout << "Please choose an option (0-" << menuLength - 1 << ")." << endl; 
+    std::cout << "Please choose an option (0-" << menuLength - 1 << ")." << std::endl; 
     for (int i = 0; i < menuLength; i++) {
-        cout << "  " << i << ") " << menu.at(i).getName() << endl;
+        std::cout << "  " << i << ") " << menu.at(i).getName() << std::endl;
     }
-    cout << "> ";
+    std::cout << "> ";
 }
 void Menu::selectItem() {
     int inpChoice = 0;
 
-    while(!(cin >> inpChoice)) {
-        cout << "Please insert an integer.\n> ";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    while(!(std::cin >> inpChoice)) {
+        std::cout << "Please insert an integer.\n> ";
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     };
 
     if (( (inpChoice < 0) || (inpChoice >= static_cast<int>(menu.size())) )) {
-        string errMsg = "This is not an option: " + to_string(inpChoice);
+        std::string errMsg = "This is not an option: " + std::to_string(inpChoice);
         throw std::invalid_argument(errMsg);
 
     } else if (inpChoice == 0) {
@@ -63,15 +63,15 @@ void Menu::addItem(MenuItem m) {
 }
 void Menu::activateMenu() {
     while (showMenu) {
-        cout << endl;
+        std::cout << std::endl;
         printMenu();
         try {
             selectItem();
         } catch (std::invalid_argument argExeption) {
-            cout << "Error: " << argExeption.what() << endl;
+            std::cout << "Error: " << argExeption.what() << std::endl;
         }
     }
-    cout << "-------- Exiting menu --------\n\n" << endl;
+    std::cout << "-------- Exiting menu --------\n\n" << std::endl;
 }
 
 
