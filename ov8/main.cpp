@@ -2,6 +2,7 @@
 
 #include "exersizeFunctions.h"
 #include "Matrix.h"
+#include "Dummy.h"
 
 #include <iostream>
 
@@ -35,6 +36,19 @@ int main()
             testMatrix();
         }
     });
+
+    //  Exersize 3
+    menu.addItem(MenuItem{
+        "Dummy",
+        []() {
+            dummyTest();
+        }
+    });
+    /*
+        The program crashed because a,b and c are pointing to the
+        same memory position. This causes problems when 
+        each of them are to destructed.
+    */
 
 
 

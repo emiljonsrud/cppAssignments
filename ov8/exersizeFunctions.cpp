@@ -1,6 +1,7 @@
 #include "exersizeFunctions.h"
 
 #include "Matrix.h"
+#include "Dummy.h"
 
 #include <iostream>
 
@@ -105,4 +106,23 @@ void testMatrix() {
             B.set(3, 4, 6.9);
             std::cout << B.get(3, 4);
             std::cout << B;
+}
+
+//          Assignment 3 - Dummy code
+void dummyTest() {
+    Dummy a;
+    *a.num = 4;
+    Dummy b{a};
+    Dummy c;
+    c = a;
+    std::cout << "a: " << *a.num << '\n';
+    std::cout << "b: " << *b.num << '\n';
+    std::cout << "c: " << *c.num << '\n';
+
+    *b.num = 3;
+    *c.num = 5;
+
+    std::cout << "a: " << *a.num << '\n';
+    std::cout << "b: " << *b.num << '\n';
+    std::cout << "c: " << *c.num << '\n';
 }
