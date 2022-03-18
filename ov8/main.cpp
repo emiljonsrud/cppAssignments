@@ -50,6 +50,13 @@ int main()
         each of them are to destructed.
     */
 
+   //Exersize 4
+   menu.addItem(MenuItem{
+       "Matrix copy",
+       []() {
+           testMatrixCopy();
+       }
+   });
 
 
 

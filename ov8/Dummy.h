@@ -8,9 +8,12 @@ public:
     Dummy() {
         num = new int{0};
     }
-
     ~Dummy() {
         std::cout << "A dummy has been deleted" << std::endl;
         delete num;
     }
+
+    Dummy(const Dummy &other);
+    Dummy operator=(Dummy rhs);
+
 };

@@ -128,3 +128,16 @@ void dummyTest() {
     std::cout << "b: " << *b.num << '\n';
     std::cout << "c: " << *c.num << '\n';
 }
+
+//      Assignment 4 - Matrix copy
+void testMatrixCopy() {
+    Matrix A{3, 5};
+    std::cout << A;
+
+    Matrix B{A};
+    std::cout << "A" << A;
+
+    std::cout << "B" << B;
+
+    
+}

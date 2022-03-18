@@ -8,11 +8,10 @@
 
 
 //      PUBLIC
-Matrix::Matrix(int nRows, int nColumns)  : height{nRows}, width{nColumns} {
-    
-    assert(nRows > 0 && nColumns > 0);
 
-    
+//      Con- and de-structors
+Matrix::Matrix(int nRows, int nColumns)  : height{nRows}, width{nColumns} {
+    assert(nRows > 0 && nColumns > 0);    
     //  Allocate storage for the rows (which will be an array of array pointers)
     //  this array is initially filled with nullpointers
     double** rows = new double*[nRows]{nullptr};
@@ -45,6 +44,21 @@ Matrix::~Matrix() {
     // Deallocate the rows pointing to columns
     // delete[] matrix;  <-- Denne fører til leak, hvorfor?
 }
+Matrix::Matrix(const Matrix &rhs) {
+    // int this_rows = this->getRows();
+    // int this_cols = this->getColumns();
+
+    // Allocate memory for the new matrix
+    double** rows = new double*[rhs.getRows()]{nullptr};
+    for(int i = 0; i < rhs.getRows(); i++) {
+        // Allocate new memory for each column
+        double* column = new double[rhs.getColumns()]{};
+        column = *(rhs.matrix + i);
+        *(rows + i) =  column;
+    }
+    this->matrix = rows;
+}
+
 
 //      Get
 double Matrix::get(int row, int col) const {

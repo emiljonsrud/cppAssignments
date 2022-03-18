@@ -9,9 +9,11 @@ private:
 
     double** matrix;
 public:
+    // Con- and de-structors
     Matrix(int nRows, int nColumns);    //contructor
-    explicit Matrix(int nRows);         
+    explicit Matrix(int nRows);         //
     virtual ~Matrix();                  //destructor
+    Matrix(const Matrix &rhs);
 
     //  Gets
     double get(int row, int col) const;

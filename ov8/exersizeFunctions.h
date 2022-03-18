@@ -13,3 +13,6 @@ void testMatrix();
 
 //  Assignment 3
 void dummyTest();
+
+//  Assignment 4
+void testMatrixCopy();
