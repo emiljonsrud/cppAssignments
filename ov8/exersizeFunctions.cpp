@@ -6,7 +6,7 @@
 
 
 void testCode() {
-    constexpr int tableSize {3};
+    // constexpr int tableSize {3};
     // int numTable[tableSize] = {2, 4, 6};
     // int* numTable = new int[tableSize]{1};
 
@@ -30,12 +30,6 @@ void testCode() {
 
     
 }
-void printMatrix(int** arr, int nRows, int nCols) {
-    for (int i = 0; i < nRows; i++) {
-        printArray(*(arr+i), nCols);
-    }
-}
-
 
 //          Assignment 1 - Fibonacci numbers
 
@@ -93,5 +87,22 @@ void createFibonacci() {
 
 
 
-//          Assignment 2
+//          Assignment 2 - Matrix
+void testMatrix() {
+    // Test the id-matrix constructor
+            Matrix A{4};
+            std::cout << A;
+            
+            // Test the M*N-matrix constructor
+            Matrix B{5, 8};
+            std::cout << B;
 
+            // Test getRows() and getColumns()
+            std::cout << "Rows: " << B.getRows() 
+            << ", columns: " << B.getColumns() << std::endl;
+            
+            //  Test set and get
+            B.set(3, 4, 6.9);
+            std::cout << B.get(3, 4);
+            std::cout << B;
+}
