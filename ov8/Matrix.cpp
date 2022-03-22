@@ -48,15 +48,33 @@ Matrix::Matrix(const Matrix &rhs) {
     // int this_rows = this->getRows();
     // int this_cols = this->getColumns();
 
+    // int* tempWidth = new int{0};
+    // int* tempHeight = new int{0};
+    // *tempWidth = rhs.getColumns();
+    // *tempHeight = rhs.getRows();
+
+    this->width = rhs.getColumns(); // Dette gir: free(): double free detected in tcache 2
+    this->height = rhs.getRows();   // vet ikke hvorfor
+    // this->width = 3;
+    // this->height = 2;
+
+    // delete tempWidth;
+    // delete tempHeight;
+
+    
+
     // Allocate memory for the new matrix
-    double** rows = new double*[rhs.getRows()]{nullptr};
+    this->matrix = new double*[rhs.getRows()]{nullptr};
     for(int i = 0; i < rhs.getRows(); i++) {
+
         // Allocate new memory for each column
-        double* column = new double[rhs.getColumns()]{};
-        column = *(rhs.matrix + i);
-        *(rows + i) =  column;
+        // double* column = new double[rhs.getColumns()]{};
+        // column = *(rhs.matrix + i);
+        // *(*rows + i) =  column;
+
+        *(matrix + i) = new double[rhs.getColumns()]{};
+        *(matrix + i) = *(rhs.matrix + i);
     }
-    this->matrix = rows;
 }
 
 

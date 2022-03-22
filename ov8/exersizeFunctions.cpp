@@ -131,12 +131,12 @@ void dummyTest() {
 
 //      Assignment 4 - Matrix copy
 void testMatrixCopy() {
-    Matrix A{3, 5};
-    std::cout << A;
+    Matrix A{2, 3};
+    // std::cout << A;
 
-    Matrix B{A};
     std::cout << "A" << A;
-
+    Matrix B{A};
+    // Matrix B{3, 5};
     std::cout << "B" << B;
 
     
