@@ -134,3 +134,10 @@ Matrix Matrix::operator+=(const Matrix &rhs) {
     }
     return *this;
 }
+Matrix Matrix::operator+(const Matrix &rhs) {
+    assert(this->height = rhs.height);
+    assert(this->width = rhs.width);
+    
+    Matrix tempMatrix{*this};
+    return tempMatrix+=rhs;
+}

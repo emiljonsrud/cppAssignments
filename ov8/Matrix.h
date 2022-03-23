@@ -37,7 +37,7 @@ public:
     double* operator[](int row);
     Matrix operator=(const Matrix &rhs);
     Matrix operator+=(const Matrix &rhs);
-
+    Matrix operator+(const Matrix &rhs);
 };
 // template<class Matrix> void swap( Matrix& a, Matrix& b);
 

@@ -146,17 +146,33 @@ void testMatrixCopy() {
 
 //          Assignment 5 - Operators
 void testAddition() {
-    Matrix A{3, 6};
-    A.set(1, 1, 1.0);
-    A.set(1, 2, 2);
-    A.set(2, 1, 2);
-    
-    Matrix B{A};
-    std::cout << "A:" << A << "B: " << B << std::endl;
+    // Create A
+    Matrix A{2, 2};
+    A.set(0, 0, 1);
+    A.set(0, 1, 2);
+    A.set(1, 0, 3);
+    A.set(1, 1, 4);
 
-    B += A;
-    std::cout << "B += A:" << B << std::endl;
+    // Create B
+    Matrix B{2, 2};
+    B.set(0, 0, 4);
+    B.set(0, 1, 3);
+    B.set(1, 0, 2);
+    B.set(1, 1, 1);
 
+    // Create C
+    Matrix C{2, 2};
+    C.set(0, 0, 1);
+    C.set(0, 1, 3);
+    C.set(1, 0, 1.5);
+    C.set(1, 1, 2);
     
-    
+    // Print the matrices
+    std::cout << "A:" << A << "B: " << B << "C: " << C << std::endl;
+
+    // Do a calculation
+    A += B + C;
+
+    // Print the matrices after the calculation
+    std::cout << "A:" << A << "B: " << B << "C: " << C << std::endl;
 }
