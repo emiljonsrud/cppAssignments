@@ -55,6 +55,15 @@ int main()
        "Matrix copy",
        []() {
            testMatrixCopy();
+           std::cout << "heihei" << std::endl;
+       }
+   });
+
+   //   Exersize 5
+   menu.addItem(MenuItem{
+       "Matrix addition",
+       []() {
+           testAddition();
        }
    });
 

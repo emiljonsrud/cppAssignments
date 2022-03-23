@@ -1,3 +1,4 @@
+#pragma once
 #include "Car.h"
 
 #include <string>
@@ -12,8 +13,7 @@ private:
 public:
     Person(
         std::string n, 
-        std::string mail, 
-        std::unique_ptr<Car> c = nullptr
+        std::string mail 
         );
 
 };

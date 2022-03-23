@@ -1,6 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include <assert.h>
+#include <iostream>
+#include <iomanip>
+#include <utility>
 
 class Matrix {
 private:
@@ -23,14 +27,17 @@ public:
     int getColumns() const {
         return width;
     }
-
+    
     //  Sets
     void set(int row, int col, double value);
 
     //  Operators
-    double* operator[](int row);
     friend std::ostream& operator<<(std::ostream& os, const Matrix& M);
 
+    double* operator[](int row);
+    Matrix operator=(const Matrix &rhs);
+    Matrix operator+=(const Matrix &rhs);
 
 };
+// template<class Matrix> void swap( Matrix& a, Matrix& b);
 

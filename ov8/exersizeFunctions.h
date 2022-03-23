@@ -16,3 +16,6 @@ void dummyTest();
 
 //  Assignment 4
 void testMatrixCopy();
+
+//  Assignment 5
+void testAddition();

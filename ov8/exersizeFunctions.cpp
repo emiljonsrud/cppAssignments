@@ -129,15 +129,34 @@ void dummyTest() {
     std::cout << "c: " << *c.num << '\n';
 }
 
-//      Assignment 4 - Matrix copy
+//          Assignment 4 - Matrix copy
 void testMatrixCopy() {
-    Matrix A{2, 3};
+    Matrix A{3,6};
     // std::cout << A;
+    A.set(2, 2, 6.9);
 
     std::cout << "A" << A;
     Matrix B{A};
     // Matrix B{3, 5};
     std::cout << "B" << B;
 
+    Matrix C = A;
+    std::cout << "C" << C;
+}
+
+//          Assignment 5 - Operators
+void testAddition() {
+    Matrix A{3, 6};
+    A.set(1, 1, 1.0);
+    A.set(1, 2, 2);
+    A.set(2, 1, 2);
+    
+    Matrix B{A};
+    std::cout << "A:" << A << "B: " << B << std::endl;
+
+    B += A;
+    std::cout << "B += A:" << B << std::endl;
+
+    
     
 }
