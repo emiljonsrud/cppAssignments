@@ -11,24 +11,22 @@ private:
     std::unique_ptr<Car> car;
 
 public:
-    // Er det en måte å lage bare én kontstruktør?
     //  Constructors 
     Person(
-        std::string n, 
-        std::string mail
-    );
-    Person(
-        std::string n, 
-        std::string mail,
-        Car c
+        std::string n,      // Name
+        std::string mail,   // Email
+        std::unique_ptr<Car> = nullptr // Car
     );
 
     //  Gets
-    std::string getName() const {return name;}
-    std::string getEmail() const {return email;}
+    std::string getName() const {return name;}      // Name
+    std::string getEmail() const {return email;}    // Email
 
     //  Sets
     void setEmail(const std::string newEmail) {email = newEmail;}
     
+
+    //  Other functions
+    bool hasAvailableSeats() const;
 
 };
