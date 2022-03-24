@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 #include "Person.h"
+#include "Meeting.h"
 
 int main(){
     Menu menu;
@@ -17,8 +18,15 @@ int main(){
 
             Person p3{"Matias", "stud@ass.com", std::make_unique<Car>(Car{3})};
             std::cout << p3 << std::endl;
+        }
+    });
 
-
+    menu.addItem(MenuItem{
+        "Test campus",
+        []() {
+            std::cout << Campus::trd << std::endl;
+            std::cout << Campus::aal << std::endl;
+            std::cout << Campus::gjo << std::endl;
         }
     });
     
