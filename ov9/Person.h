@@ -4,6 +4,9 @@
 #include <string>
 #include <memory>
 
+#include <iostream>
+#include <iomanip>
+
 class Person{
 private:
     std::string name;
@@ -25,8 +28,11 @@ public:
     //  Sets
     void setEmail(const std::string newEmail) {email = newEmail;}
     
+    //  Operators
 
     //  Other functions
     bool hasAvailableSeats() const;
 
 };
+// Non-member functions
+std::ostream& operator<<(std::ostream& os, const Person &person);

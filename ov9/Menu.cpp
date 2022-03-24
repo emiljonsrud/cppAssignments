@@ -44,6 +44,7 @@ void Menu::selectItem() {
         showMenu = false;
 
     } else {
+        std::cout << "\n";
         menu.at(inpChoice).execute();
     }
 }
