@@ -25,6 +25,23 @@ std::string Meeting::formatTime(int time) const {
     
     return formattedTime;
 }
+void Meeting::addDriversWithFreeSeats(
+    std::vector<std::shared_ptr<Person>> &coDrivers,
+    const std::vector<std::shared_ptr<Person>> participants
+) const {
+    // Iterate through the ppl in the other meeting
+    for (std::shared_ptr<Person> participant : participants) {
+
+        // Check if participant has car with free seats, and add them to the
+        // vector of codrivers if this is the case
+        if (participant.get()->hasAvailableSeats()) {
+            coDrivers.push_back(participant);
+        }
+    }
+}
+
+
+
 
 //# PUBLIC
 //##    Constructor
@@ -76,6 +93,37 @@ std::string Meeting::getTimeSpan() const {
 void Meeting::addParticipant(std::shared_ptr<Person> participant) {
     participants.push_back(participant);    
 }
+// Find potential people in this or the another meeting with open slots in their car, and
+// are goint to the same place as this meeting 
+std::vector<std::shared_ptr<Person>> Meeting::findPotentialCoDriving(Meeting otherMeeting) const {
+
+    // Create a vector containing codriving cantidates
+    std::vector<std::shared_ptr<Person>> coDrivers;
+    
+    // Check if the other meeting is at the same place, and within a time window of 1h
+    int timeWindow = 100; // This is one hour by our time format
+    if (
+        (this->location == otherMeeting.location) &&    // same location
+        (this->day == otherMeeting.day) &&              // same day
+        (
+            this->startTime <= otherMeeting.startTime + timeWindow &&
+            this->startTime >= otherMeeting.startTime - timeWindow
+        ) &&
+        (
+            this->endTime <= otherMeeting.endTime + timeWindow &&
+            this->endTime >= otherMeeting.endTime - timeWindow
+        )
+    ) {
+        // Add the participants from the other meeting with cars and free seats
+        addDriversWithFreeSeats(coDrivers, otherMeeting.participants);
+    }
+    // Add the participants in this meeting with cars and free seats
+    addDriversWithFreeSeats(coDrivers, this->participants);
+
+    return coDrivers;
+}
+
+
 
 
 //# GLOBAL

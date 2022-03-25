@@ -22,6 +22,10 @@ private:
     std::vector<std::shared_ptr<Person>> participants;
     
     std::string formatTime(int time) const;
+    void addDriversWithFreeSeats(
+        std::vector<std::shared_ptr<Person>> &coDrivers,
+        const std::vector<std::shared_ptr<Person>> participants
+    ) const;
     
 public:
     //  Constructors
@@ -46,6 +50,7 @@ public:
 
     //  Other functions
     void addParticipant(std::shared_ptr<Person> participant);
+    std::vector<std::shared_ptr<Person>> findPotentialCoDriving(Meeting otherMeeting) const;
 
 };
 
