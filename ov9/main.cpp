@@ -2,6 +2,7 @@
 
 #include "Person.h"
 #include "Meeting.h"
+#include "MeetingWindow.h"
 
 int main(){
     Menu menu;
@@ -87,6 +88,21 @@ int main(){
             for (std::shared_ptr<Person> coDriver : meet1.findPotentialCoDriving(meet2)) {
                 std::cout << *coDriver << std::endl;
             }
+       }
+   });
+
+   //   Exersize 4
+   menu.addItem(MenuItem{
+       "Meeting GUI",
+       []() {
+           MeetingWindow meetWin{
+               100,         // x-pos
+               100,         // y.pos
+               400,        // window width
+               250,        // window heigh
+               "Meeting"    // window name
+           };
+           gui_main();
        }
    });
 
