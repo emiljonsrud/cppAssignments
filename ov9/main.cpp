@@ -21,6 +21,7 @@ int main(){
         }
     });
 
+    //#     Exersize 3
     menu.addItem(MenuItem{
         "Test campus",
         []() {
@@ -29,6 +30,16 @@ int main(){
             std::cout << Campus::gjo << std::endl;
         }
     });
+    /*
+            Exersize 3e
+            When we create the Meeting class, it does not allocate any new space for 
+            Persons, instead it uses a shared pointer pointing to the Persons in the
+            memory. When Meeting is destructed, the shared pointer is deleted, which
+            means that the count of pointers pointing to the Persons si decreased by 
+            one.
+    */
+
+   
     
 
     menu.activateMenu();
