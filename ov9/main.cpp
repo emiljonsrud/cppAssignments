@@ -39,7 +39,41 @@ int main(){
             one.
     */
 
-   
+   menu.addItem(MenuItem{
+       "Test meeting",
+       []() {
+           // Create shared pointers to people to test with
+            std::shared_ptr<Person> p1_ptr = std::make_unique<Person>(Person{
+                "Emil", 
+                "emil@gmail.com"
+            });
+            std::shared_ptr<Person> p2_ptr = std::make_unique<Person>(Person{
+                "Sindre", 
+                "miatalover69@hotmail.com", 
+                std::make_unique<Car>(Car(1))
+            });
+            std::shared_ptr<Person> p3_ptr = std::make_unique<Person>(Person{
+                "Matias", 
+                "stud@ass.com", 
+                std::make_unique<Car>(Car{3})
+            });
+            
+            // Create a Meeting to test with
+            Meeting meet1{
+                2, 
+                815, 
+                1000, 
+                Campus::trd, 
+                "Intro Topologi", 
+                p1_ptr
+            };
+            meet1.addParticipant(p2_ptr);
+            meet1.addParticipant(p3_ptr);
+            std::cout << meet1;
+       }
+   });
+
+
     
 
     menu.activateMenu();
