@@ -15,6 +15,7 @@ private:
 	const int width;		// Bredde i antall tiles
 	const int height;		// Hoyde i antall tiles
 	const int mines;		// Antall miner
+	bool isLost;			
 	vector<shared_ptr<Tile>> tiles; // Vektor som inneholder alle tiles
 
 
@@ -40,4 +41,8 @@ private:
 	// callback funksjoner for de tile knappene
 	static void cb_click(Fl_Widget*, void* pw) { static_cast<MinesweeperWindow*>(pw)->click(); };
 	void click();
+
+	bool isWon() const;
+
+	
 };
