@@ -106,8 +106,19 @@ int main(){
        }
    });
 
+    // menu.activateMenu();
+
 
     
 
-    menu.activateMenu();
+    MeetingWindow meetWin{
+        100,         // x-pos
+        100,         // y.pos
+        400,        // window width
+        250,        // window heigh
+        "Meeting"    // window name
+    };
+    gui_main();
+    std::cout << "People:" << std::endl;
+    meetWin.printPeople();
 }
