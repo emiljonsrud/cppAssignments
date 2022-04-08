@@ -15,8 +15,19 @@ private:
 	const int width;		// Bredde i antall tiles
 	const int height;		// Hoyde i antall tiles
 	const int mines;		// Antall miner
-	bool isLost;			
+	bool endGame = false;			
 	vector<shared_ptr<Tile>> tiles; // Vektor som inneholder alle tiles
+
+	// FLTK-widget paramaters
+	static constexpr int dispH = 30;
+	static constexpr int pad = 40;
+	const int boardOffsetX = width*cellSize;
+	const int boardOffsetY = height*cellSize;
+
+	Fl_Output winScreen;
+	static constexpr int winScreenWidth = 100;
+
+	
 
 
 	// hoyde og bredde i piksler
@@ -42,7 +53,7 @@ private:
 	static void cb_click(Fl_Widget*, void* pw) { static_cast<MinesweeperWindow*>(pw)->click(); };
 	void click();
 
-	bool isWon() const;
+	void checkWin();
 
 	
 };

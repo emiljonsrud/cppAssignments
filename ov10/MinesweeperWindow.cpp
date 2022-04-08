@@ -3,14 +3,20 @@
 MinesweeperWindow::MinesweeperWindow(int x, int y, int width, int height, int mines, const string &title) : 
 	// Initialiser medlemsvariabler, bruker konstruktoren til AnimationWindow-klassen
 	AnimationWindow{x, y, width * cellSize, (height + 1) * cellSize, title},
-	width{width}, height{height}, mines{mines}
+	width{width}, height{height}, mines{mines},
+	winScreen(
+		boardOffsetX + pad,
+		pad,
+		winScreenWidth,
+		dispH
+	)
 {
 	// Legg til alle tiles i vinduet
 	for (int i = 0; i < height; ++i) {
 		for (int j = 0; j < width; ++j) {
 			tiles.emplace_back(new Tile{ Point{j * cellSize, i * cellSize}, cellSize});
 			tiles.back()->callback(cb_click, this);
-			add(tiles.back().get()); 
+			add(tiles.back().get());
 		}
 	}
 
@@ -26,6 +32,8 @@ MinesweeperWindow::MinesweeperWindow(int x, int y, int width, int height, int mi
 			remainingMines--;
 		}
 	}
+	// Add output screens
+	add(winScreen); 
 
 	// Fjern window reskalering
 	resizable(nullptr);
@@ -52,9 +60,11 @@ vector<Point> MinesweeperWindow::adjacentPoints(Point xy) const {
 
 void MinesweeperWindow::openTile(Point xy) {
 	Tile* cell = at(xy).get();
+
 	// Open the cell if it is closed
-	if(cell->getState() == Cell::closed && isLost == false) {
+	if(cell->getState() == Cell::closed && !endGame) {
 		cell->open();
+		checkWin();
 	} else {
 		return;
 	}
@@ -69,7 +79,6 @@ void MinesweeperWindow::openTile(Point xy) {
 		if(numMines > 0) {
 			cell->setAdjMines(numMines);
 		} else if (numMines == 0) {
-
 			// Iterate the adjacent tiles
 			for(Point p : adjPoints) {
 				// Recursivly open tiles with no neighboring mines
@@ -77,8 +86,14 @@ void MinesweeperWindow::openTile(Point xy) {
 			}
 		}
 	} else {
-		isLost = true;
+
+		// If the cell is a bomb, the player has lost
+		std::cout << "Player lost" << std::endl;
+		this->winScreen.value("You lost");
+		endGame = true;
 	}
+
+
 }
 
 void MinesweeperWindow::flagTile(Point xy) {
@@ -122,16 +137,16 @@ int MinesweeperWindow::countMines(vector<Point> points) const {
 	return numMines;
 }
 
-bool MinesweeperWindow::isWon() const {
+void MinesweeperWindow::checkWin() {
 	// Find the number of remaining cells
 	int remainingCells {0};
 	for(shared_ptr<Tile> tile : tiles) {
 		if(tile.get()->getState() == Cell::closed) {remainingCells++;}
 	}
 	
-	if(remainingCells == mines && !isLost) {
-		return true;
-	} else {
-		return false;
+	if(remainingCells == mines && !endGame) {
+		winScreen.value("You won!");
+		std::cout << "Player won" << std::endl;
+		endGame = true;
 	}
 }
