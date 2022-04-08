@@ -16,16 +16,22 @@ private:
 	const int height;		// Hoyde i antall tiles
 	const int mines;		// Antall miner
 	bool endGame = false;			
+	int remainingFlags;
 	vector<shared_ptr<Tile>> tiles; // Vektor som inneholder alle tiles
 
 	// FLTK-widget paramaters
-	static constexpr int dispH = 30;
-	static constexpr int pad = 40;
 	const int boardOffsetX = width*cellSize;
 	const int boardOffsetY = height*cellSize;
+	static constexpr int dispH = 30;
+	static constexpr int pad = 15;
+	static constexpr int padX = 140;
 
 	Fl_Output winScreen;
 	static constexpr int winScreenWidth = 100;
+
+	Fl_Output flagScreen;
+	static constexpr int flagScreenWidth = 40;
+
 
 	
 
@@ -54,6 +60,6 @@ private:
 	void click();
 
 	void checkWin();
-
+	void updateGame();
 	
 };
