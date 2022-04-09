@@ -16,6 +16,20 @@ MinesweeperWindow::MinesweeperWindow(int x, int y, int width, int height, int mi
 		flagScreenWidth,
 		dispH,
 		"Remaining mines"
+	),
+	quitBtn(
+		boardOffsetX - btnW,   // X-pos
+		boardOffsetY + 3*pad + 2*dispH,	// Y-pos
+		btnW,           // Button width
+		dispH,           // Button height
+		"Quit"
+	),
+	restartBtn(
+		boardOffsetX - btnW,   // X-pos
+		boardOffsetY + 4*pad + 3*dispH,	// Y-pos
+		btnW,           // Button width
+		dispH,           // Button height
+		"Restart"
 	)
 {
 	// Legg til alle tiles i vinduet
@@ -27,18 +41,9 @@ MinesweeperWindow::MinesweeperWindow(int x, int y, int width, int height, int mi
 		}
 	}
 
-	// Legger til miner paa tilfeldige posisjoner
-	int remainingMines = mines;
-	while(remainingMines > 0) {
-		// Select a random cell
-		int randPos = std::rand()%(height*width);
-		
-		// Place a mine if the cell does not have a mine
-		if (!tiles.at(randPos).get()->getIsMine()) {
-			tiles.at(randPos).get()->setIsMine(true);
-			remainingMines--;
-		}
-	}
+	// Place mines at random positions
+	placeMines(mines);
+	
 	// Add output screens
 	add(winScreen); 
 	add(flagScreen);
@@ -95,12 +100,8 @@ void MinesweeperWindow::openTile(Point xy) {
 				openTile(p);
 			}
 		}
-	} else {
-		// If the cell is a bomb, the player has lost
-		std::cout << "Player lost" << std::endl;
-		this->winScreen.value("You lost");
-		endGame = true;
 	}
+	checkLost(xy);
 }
 
 void MinesweeperWindow::flagTile(Point xy) {
@@ -125,6 +126,9 @@ void MinesweeperWindow::flagTile(Point xy) {
 //Kaller openTile ved venstreklikk og flagTile ved hoyreklikk/trykke med to fingre paa mac
 void MinesweeperWindow::click()
 {
+	// Abort the click if the game if ended
+	if(endGame) {return;}
+	
 	Point xy{Fl::event_x(), Fl::event_y()};
 
 	MouseButton mb = static_cast<MouseButton>(Fl::event_button());
@@ -143,6 +147,9 @@ void MinesweeperWindow::click()
 	}
 	updateGame();
 }
+
+
+
 int MinesweeperWindow::countMines(vector<Point> points) const {
 
 	// The number of cells that are mines
@@ -155,6 +162,24 @@ int MinesweeperWindow::countMines(vector<Point> points) const {
 		}
 	}
 	return numMines;
+}
+
+
+
+
+//#		Game logic
+
+void MinesweeperWindow::checkLost(Point xy) {
+	
+	// If the cell is a bomb, the player has lost
+	if(at(xy).get()->getIsMine()) {
+		std::cout << "Player lost" << std::endl;
+		this->winScreen.value("You lost");
+		endGame = true;
+		markAllMines("X");
+		std::cout << "Player has lost" << std::endl;
+	}
+
 }
 
 void MinesweeperWindow::checkWin() {
@@ -171,20 +196,32 @@ void MinesweeperWindow::checkWin() {
 			default:
 				break;
 		}
-	}
-	
+	}	
 	if(remainingCells == mines && !endGame) {
 		winScreen.value("You won!");
 		std::cout << "Player won" << std::endl;
 		endGame = true;
+		markAllMines("@<");
 	}
 }
 
 void MinesweeperWindow::updateGame() {
 	checkWin();
-	if (endGame) {return;}
+	if (endGame) {
+		// Add end of game buttons
+		add(quitBtn);
+		quitBtn.callback(cb_quit, this);
 
-	
+		add(restartBtn);
+		restartBtn.callback(cb_restart, this);
+
+		// Show buttons if they are hidden
+		restartBtn.show();
+		quitBtn.show();
+		
+		return;
+	}
+
 	flagScreen.value(std::to_string(remainingFlags).c_str());
 
 	if (remainingFlags > 0) {
@@ -194,3 +231,46 @@ void MinesweeperWindow::updateGame() {
 	}
 }
 
+
+
+//##		Utility
+void MinesweeperWindow::markAllMines(string mark) {
+	for (std::shared_ptr<Tile> tile : tiles) {
+		if(tile.get()->getIsMine()) {
+			tile.get()->markTile(mark);
+		}
+	}
+}
+void MinesweeperWindow::placeMines(int numMines) {
+	int remainingMines = numMines;
+	while(remainingMines > 0) {
+		// Select a random cell
+		int randPos = std::rand()%(height*width);
+		
+		// Place a mine if the cell does not have a mine
+		if (!tiles.at(randPos).get()->getIsMine()) {
+			tiles.at(randPos).get()->setIsMine(true);
+			remainingMines--;
+		}
+	}
+}
+void MinesweeperWindow::resetBoard() {
+	// Iterate through all the tiles and reset them
+	for (std::shared_ptr<Tile> tile : tiles) {
+		tile.get()->value(0);
+		tile.get()->setIsMine(false);
+		tile.get()->setState(Cell::closed);
+		tile.get()->markTile("");
+	}
+	// Place mines on random tiles
+	placeMines(mines);
+
+	// Update endGame
+	this->endGame = false;
+
+	// Hide end game buttons
+	this->quitBtn.hide();
+	this->restartBtn.hide();
+
+	updateGame();
+}

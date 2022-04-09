@@ -29,6 +29,7 @@ public:
 	
 	//	Sets
 	void setIsMine(bool m){isMine = m;}
+	void setState(Cell s) {state = s;}
 	void setAdjMines(const int n);
-
+	void markTile(std::string mark);
 };

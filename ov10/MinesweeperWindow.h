@@ -32,6 +32,9 @@ private:
 	Fl_Output flagScreen;
 	static constexpr int flagScreenWidth = 40;
 
+	Fl_Button quitBtn;
+	Fl_Button restartBtn;
+	static constexpr int btnW = 60;
 
 	
 
@@ -40,10 +43,6 @@ private:
 	int Height() const { return height * cellSize; } 
 	int Width() const { return width * cellSize; }
 
-	// Returnerer en vektor med nabotilene rundt en tile, der hver tile representeres som et punkt
-	vector<Point> adjacentPoints(Point xy) const;
-	// tell miner basert paa en liste tiles
-	int countMines(vector<Point> coords) const;
 
 	// Sjekker at et punkt er paa brettet
 	bool inRange(Point xy) const { return xy.x >= 0 && xy.x< Width() && xy.y >= 0 && xy.y < Height(); }
@@ -55,11 +54,26 @@ private:
 	void openTile(Point xy);
 	void flagTile(Point xy);
 
-	// callback funksjoner for de tile knappene
+	//#		Callbacks
 	static void cb_click(Fl_Widget*, void* pw) { static_cast<MinesweeperWindow*>(pw)->click(); };
 	void click();
+	static void cb_quit(Fl_Widget*, void* pw) {static_cast<MinesweeperWindow*>(pw)->hide();};
+	static void cb_restart(Fl_Widget*, void* pw) {static_cast<MinesweeperWindow*>(pw)->resetBoard();};
 
+	//#		Game logic
 	void checkWin();
+	void checkLost(Point xy);
 	void updateGame();
 	
+	//#		Utility
+	// Returnerer en vektor med nabotilene rundt en tile, der hver tile representeres som et punkt
+	vector<Point> adjacentPoints(Point xy) const;
+	// tell miner basert paa en liste tiles
+	int countMines(vector<Point> coords) const;
+	// Marks mines with a given string
+	void markAllMines(string mark);
+	// Places a given amount of mines on the board
+	void placeMines(int numMines);
+	// Resets the board
+	void resetBoard();
 };

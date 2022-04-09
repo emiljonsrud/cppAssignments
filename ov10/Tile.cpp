@@ -66,3 +66,8 @@ void Tile::setAdjMines(const int n) {
 		throw std::invalid_argument("Invalid amout of mines: " + std::to_string(n));
 	}
 }
+
+void Tile::markTile(std::string mark) {
+	set_label(mark);
+	set_label_color(Color::red);
+}
