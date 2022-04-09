@@ -76,6 +76,7 @@ int main(){
         }        
     });
 
+
     //#     Assignment 2
 
     menu.addItem({
@@ -97,6 +98,16 @@ int main(){
         }
     });
 
+
+    //#     Assignment 3
+
+    menu.addItem({
+        "Linked list",
+        []() {
+            
+            
+        }
+    });
     
 
 
