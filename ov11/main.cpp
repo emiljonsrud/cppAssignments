@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include "LinkedList.h"
 #include "utilities.h"
+#include "Person.h"
 
 
 int main(){
@@ -42,7 +43,7 @@ int main(){
         }
     });
     
-    //#     Doing the same porcedure for sets
+    //##    Doing the same porcedure for sets
     menu.addItem(MenuItem{
         "String set iterators",
         []() {
@@ -74,6 +75,29 @@ int main(){
             print(strSet);
         }        
     });
+
+    //#     Assignment 2
+
+    menu.addItem({
+        "Name sets",
+        []() {
+            std::list<Person> people;
+            Person p1{"Per", "Person"};
+            Person p2{"Navn", "Navnesen"};
+            Person p3{"Gauss", "Newmann"};
+            Person p4{"Albert", "Einstein"};
+            Person p5 {"Lars", "Monsen"};
+            insertOrdered(people, p1);
+            insertOrdered(people, p2);
+            insertOrdered(people, p3);
+            insertOrdered(people, p4);
+            insertOrdered(people, p5);
+
+            print(people);
+        }
+    });
+
+    
 
 
     

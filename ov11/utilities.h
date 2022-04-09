@@ -1,9 +1,12 @@
 #pragma once
-#include <vector>
 #include <string>
+
 #include <iostream>
 #include <ostream>
+
 #include <set>
+#include <vector>
+#include <list>
 
 template<typename T1, typename T2>
 void replace(T1 &vec, T2 old, T2 replacement) {
@@ -21,7 +24,7 @@ void replace(T1 &vec, T2 old, T2 replacement) {
 template<typename T1>
 void print(T1 vec) {
     // Iterate through the vector in the reversed direction
-    for(typename T1::const_iterator it = vec.begin(); it != vec.end(); it++) {
+    for(typename T1::iterator it = vec.begin(); it != vec.end(); it++) {
         std::cout << "    " << *it << std::endl;
     }
 }
