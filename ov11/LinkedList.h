@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <ostream>
+#include <iostream>
 #include <string>
 
 // test code 
