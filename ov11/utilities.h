@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <ostream>
 #include <set>
 
 template<typename T1, typename T2>
