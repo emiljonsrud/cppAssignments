@@ -33,10 +33,19 @@ const map<TetrominoType, vector<vector<int>>> initialMatrixMap {
 };
 
 Tetromino::Tetromino(Point startingPoint, TetrominoType tetType) : 
-topLeftCorner{startingPoint}
+topLeftCorner{startingPoint},
+matrixSize{static_cast<int>(initialMatrixMap.at(tetType).size())}
 {
-
+    for(int i = 0; i < matrixSize; i++) {
+        for (int j = 0; j < matrixSize; j++) {
+            if(initialMatrixMap.at(tetType).at(i).at(j)) {
+                blockMatrix.at(i).at(j) = tetType;
+            } else {blockMatrix.at(i).at(j) = TetrominoType::NONE;}
+        }
+    }
 }
+
+
 
 void Tetromino::rotateCounterClockwise() {
     //Første rotasjon, med hensyn på diagonalen
