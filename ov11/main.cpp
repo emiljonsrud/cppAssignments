@@ -104,8 +104,18 @@ int main(){
     menu.addItem({
         "Linked list",
         []() {
+            LinkedList::LinkedList list;
+            list.insert(list.end(), "Item 1");
+            // if(insertedNode->getNext() == nullptr) {std::cout << "Next is null\n";}
+            // if(insertedNode->getPrev() == nullptr) {std::cout << "Prev is null\n";}
+
+            // delete insertedNode;
             
+            // std::cout << *insertedNode->getNext() << std::endl;
+            // list.insert(list.find("Item 1"), "Item 2");
+            // list.insert(list.end(), "Item 3");
             
+            std::cout << list;
         }
     });
     

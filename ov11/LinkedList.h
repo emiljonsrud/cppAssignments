@@ -3,6 +3,7 @@
 #include <memory>
 #include <ostream>
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 // test code 
@@ -83,6 +84,6 @@ public:
     void remove(const std::string& value);
 
     // write a string representation of the list to the ostream
-    friend std::ostream & operator<<(std::ostream & os, const LinkedList& list);
+    friend std::ostream& operator<<(std::ostream & os, const LinkedList& list);
 };
 }// namespace LinkedList
