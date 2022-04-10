@@ -5,9 +5,8 @@
 
 int main()
 {
-	/********************************************************/
-		//Opprett vindu her
-    /********************************************************/
-        //kall run på det her
+	// TetrisWindow gameWindow{};
+	// gameWindow.run();
+
 	return 0;
 }

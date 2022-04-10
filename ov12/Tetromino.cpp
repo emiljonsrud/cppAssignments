@@ -47,6 +47,7 @@ matrixSize{static_cast<int>(initialMatrixMap.at(tetType).size())}
 
 
 
+//#     MOVEMENT
 void Tetromino::rotateCounterClockwise() {
     //Første rotasjon, med hensyn på diagonalen
     for(int row = 0; row < matrixSize; row++){
@@ -63,7 +64,6 @@ void Tetromino::rotateCounterClockwise() {
         }
     }
 }
-
 void Tetromino::rotateClockwise() {
     //Første rotasjon, med hensyn på diagonalen
     for(int row = 0; row < matrixSize; row++){
@@ -78,4 +78,13 @@ void Tetromino::rotateClockwise() {
             std::swap(blockMatrix[row][column], blockMatrix[row][matrixSize-column-1]);
         }
     }
+}
+
+
+//#     DIV
+bool Tetromino::blockExist(int row, int column) const {    
+    // First check the bounds
+    if(row >= matrixSize || column >= matrixSize) {return false;}
+    else if(blockMatrix.at(row).at(column) == TetrominoType::NONE) {return false;}
+    else{return true;}
 }
