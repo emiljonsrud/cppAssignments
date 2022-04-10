@@ -21,6 +21,9 @@ public:
     //#     Div
     bool blockExist(int row, int column) const;
     TetrominoType getBlock(int row, int column);
+    int getMatrixSize() const {return matrixSize;}
+    Point getPosition() const {return topLeftCorner;}
+    
    
 private: 
     int matrixSize;

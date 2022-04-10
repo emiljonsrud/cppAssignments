@@ -57,6 +57,16 @@ const map<TetrominoType, vector<vector<int>>> initialMatrixMap {
     }
 }
 };
+const map<TetrominoType, int> tetromineToColor {
+    {TetrominoType::J,  4}, // Blue
+    {TetrominoType::L, 91}, // Orange
+    {TetrominoType::T, 13}, // Dark magenta
+    {TetrominoType::S,  2}, // Green
+    {TetrominoType::Z,  1}, // Red
+    {TetrominoType::O,  3}, // Yellow
+    {TetrominoType::I,  6}, // Cyan
+    {TetrominoType::NONE, 7}// White
+};
 
 Tetromino::Tetromino(Point startingPoint, TetrominoType tetType) : 
 topLeftCorner{startingPoint},
