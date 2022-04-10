@@ -36,3 +36,27 @@ void printReversed(T1 vec) {
 }
 
 // void replace(std::vector<std::string> &vec, std::string old, std::string replacement);
+
+
+//##        Assignment 4
+template<typename T1>
+T1 maximum(T1 lhs, T1 rhs) {
+    if(lhs >= rhs) {
+        return lhs;
+    } else {
+        return rhs;
+    }
+    // This function only works for types with overloaded >=
+}
+
+template<typename T1>
+void shuffle(std::vector<T1> &vec) {
+    for (int i = 0; i < 1000000; i++) {
+        int randI = std::rand() % vec.size();
+        T1 temp = vec.at(randI);
+        
+        typename std::vector<T1>::iterator it = vec.begin();
+        vec.erase(it + randI);
+        vec.push_back(temp);
+    }
+}

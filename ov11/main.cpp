@@ -7,6 +7,7 @@
 int main(){
     //  Create a menu
     Menu menu;
+	std::srand(unsigned(time(nullptr)));
 
 
     //#     Assignment 1
@@ -119,7 +120,58 @@ int main(){
         }
     });
     
+    
+    //#     Assignment 4
 
+    menu.addItem({
+        "Template maximum",
+        []() {
+            int a = 1;
+            int b = 2;
+            int c = maximum(a, b);
+            std::cout << "Max of " << std::to_string(a) << " and " << std::to_string(b)
+            << ": " << std::to_string(c) << std::endl;
+
+            double d = 2.4;
+            double e = 3.2;
+            double f = maximum(d, e);
+            std::cout << "Max of " << std::to_string(d) << " and " << std::to_string(e)
+            << ": " << std::to_string(f) << "\n" << std::endl;
+            
+        }
+    });
+
+    menu.addItem({
+        "Template shuffle",
+        []() {
+            //#     Part 1
+            std::vector<int> a{1, 2, 3, 4, 5, 6, 7};
+            std::cout << "Original:"<< std::endl;
+            print(a);
+            std::cout << "\nShuffled:" << std::endl;
+            shuffle(a);
+            print(a);
+
+            //#     Part 2
+            std::vector<double> b{1.2, 2.2, 3.2, 4.2};
+            std::cout << "Original:"<< std::endl;
+            print(b);
+            std::cout << "\nShuffled:" << std::endl;
+            shuffle(b);
+            print(b);
+
+            //#     Part 3
+            std::vector<std::string> c{"one", "two", "three", "four"};
+            std::cout << "Original:"<< std::endl;
+            print(c);
+            std::cout << "\nShuffled:" << std::endl;
+            shuffle(c);
+            print(c);
+            
+            
+            
+        }
+    });
 
     
 
