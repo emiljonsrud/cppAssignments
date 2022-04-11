@@ -57,27 +57,19 @@ const map<TetrominoType, vector<vector<int>>> initialMatrixMap {
     }
 }
 };
-const map<TetrominoType, int> tetromineToColor {
-    {TetrominoType::J,  4}, // Blue
-    {TetrominoType::L, 91}, // Orange
-    {TetrominoType::T, 13}, // Dark magenta
-    {TetrominoType::S,  2}, // Green
-    {TetrominoType::Z,  1}, // Red
-    {TetrominoType::O,  3}, // Yellow
-    {TetrominoType::I,  6}, // Cyan
-    {TetrominoType::NONE, 7}// White
-};
 
 Tetromino::Tetromino(Point startingPoint, TetrominoType tetType) : 
 topLeftCorner{startingPoint},
 matrixSize{static_cast<int>(initialMatrixMap.at(tetType).size())}
 {
     for(int i = 0; i < matrixSize; i++) {
+        vector<TetrominoType> row;
         for (int j = 0; j < matrixSize; j++) {
             if(initialMatrixMap.at(tetType).at(i).at(j)) {
-                blockMatrix.at(i).at(j) = tetType;
-            } else {blockMatrix.at(i).at(j) = TetrominoType::NONE;}
+                row.push_back(tetType);
+            } else {row.push_back(TetrominoType::NONE);}
         }
+        blockMatrix.push_back(row);
     }
 }
 
@@ -117,6 +109,14 @@ void Tetromino::rotateClockwise() {
 }
 
 
+//#     Gets
+TetrominoType Tetromino::getBlock(int row, int column) {
+    if(blockExist(row, column)) {
+        return blockMatrix.at(row).at(column);
+    } else {return TetrominoType::NONE;}
+    
+}
+
 //#     DIV
 bool Tetromino::blockExist(int row, int column) const {    
     // First check the bounds
@@ -124,9 +124,4 @@ bool Tetromino::blockExist(int row, int column) const {
     else if(blockMatrix.at(row).at(column) == TetrominoType::NONE) {return false;}
     else{return true;}
 }
-TetrominoType Tetromino::getBlock(int row, int column) {
-    if(blockExist(row, column)) {
-        return blockMatrix.at(row).at(column);
-    } else {return TetrominoType::NONE;}
     
-}
