@@ -30,7 +30,7 @@ void HappyFace::draw(AnimationWindow& win) {
     int mouthWidth  = 40;
     int mouthHeigh  = 20;
     int startDegree = 180;  // [deg]
-    int endDegree   = 0;    // [deg]
+    int endDegree   = 360;    // [deg]
 
     win.draw_arc(
         mouthCenter,
