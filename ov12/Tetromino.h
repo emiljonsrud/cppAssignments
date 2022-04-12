@@ -14,9 +14,9 @@ public:
     //#     Movement
     void rotateClockwise();
     void rotateCounterClockwise();
-    void moveDown() {topLeftCorner = Point{topLeftCorner.x, topLeftCorner.y+1};}
-    void moveLeft() {topLeftCorner = Point{topLeftCorner.x-1, topLeftCorner.y};}
-    void moveRight() {topLeftCorner = Point{topLeftCorner.x+1, topLeftCorner.y};}
+    void moveDown() {topLeftCorner = Point{topLeftCorner.x, topLeftCorner.y+blockSize};}
+    void moveLeft() {topLeftCorner = Point{topLeftCorner.x-blockSize, topLeftCorner.y};}
+    void moveRight() {topLeftCorner = Point{topLeftCorner.x+blockSize, topLeftCorner.y};}
 
     // Gets
     TetrominoType getBlock(int row, int column);

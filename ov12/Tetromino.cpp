@@ -25,18 +25,18 @@ const map<TetrominoType, vector<vector<int>>> initialMatrixMap {
 }, {
     TetrominoType::S,
     {
-        {0, 0, 0, 0},
-        {0, 0, 1, 1},
-        {0, 1, 1, 0},
-        {0, 0, 0, 0}
+        {0, 1, 1},
+        {1, 1, 0},
+        {0, 0, 0}
     }
 }, {
     TetrominoType::Z,
     {
-        {0, 0, 0, 0},
-        {0, 1, 1, 0},
-        {0, 0, 1, 1},
-        {0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 1, 1, 0, 0},
+        {0, 0, 1, 1, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
     }
 }, {
     TetrominoType::O,
@@ -124,4 +124,3 @@ bool Tetromino::blockExist(int row, int column) const {
     else if(blockMatrix.at(row).at(column) == TetrominoType::NONE) {return false;}
     else{return true;}
 }
-    

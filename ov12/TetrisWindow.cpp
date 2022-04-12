@@ -48,11 +48,11 @@ void TetrisWindow::run() {
         framesSinceLastTetronimoMove++;
         if(framesSinceLastTetronimoMove >= framesPerTetronimoMove) {
             framesSinceLastTetronimoMove = 0;
-            //moveTetrominoDown()
+            moveTetrominoDown();
            
         }
         drawCurrentTetromino(*this);
-     
+        handleInput();
 
         next_frame();
     }
@@ -61,24 +61,46 @@ void TetrisWindow::run() {
 
 void TetrisWindow::handleInput() {
 
+    // Movement keys
     static bool lastZKeyState = false;
     static bool lastUpKeyState = false;
+    static bool lastDownKeyState = false;
+    static bool lastLeftKeyState = false;
+    static bool lastRightKeyState = false;
+
+    // Auilararty keys
+    static bool lastBKeyState = false;
 
     bool currentZKeyState = is_key_down(KeyboardKey::Z);
     bool currentUpKeyState = is_key_down(KeyboardKey::UP);
+    bool currentDownKeyState = is_key_down(KeyboardKey::DOWN);
+    bool currentLeftKeyState = is_key_down(KeyboardKey::LEFT);
+    bool currentRightKeyState = is_key_down(KeyboardKey::RIGHT);
 
+    bool currentBKeyState = is_key_down(KeyboardKey::B);
     
     if(currentZKeyState && !lastZKeyState) {
-        cout << "Hello from z\n";
+        currentTetromino.rotateCounterClockwise();
     }
 
-    if(currentUpKeyState && !lastUpKeyState) {
-        cout << "Hello from up\n";
+    if(currentUpKeyState && !lastUpKeyState) {currentTetromino.rotateClockwise();}
+    if(currentDownKeyState && !lastDownKeyState) {currentTetromino.moveDown();}
+    if(currentLeftKeyState && !lastLeftKeyState) {currentTetromino.moveLeft();}
+    if(currentRightKeyState && !lastRightKeyState) {currentTetromino.moveRight();}
+    
+    if(currentBKeyState && !lastBKeyState) {
+        cout << "Pressed B" << endl;
+        fastenTetromino();
     }
 
 
     lastZKeyState = currentZKeyState;
     lastUpKeyState = currentUpKeyState;
+    lastDownKeyState = currentDownKeyState;
+    lastLeftKeyState = currentLeftKeyState;
+    lastRightKeyState = currentRightKeyState;
+
+    lastBKeyState = currentBKeyState;
 }
 
 void TetrisWindow::generateRandomTetromino() {
@@ -98,10 +120,33 @@ void TetrisWindow::drawCurrentTetromino(TetrisWindow& win) {
             Point p {
                 currentTetromino.getPosition().x + blockSize*i,
                 currentTetromino.getPosition().y + blockSize*j
-            };
+            }; 
             // Find the current tet-type
             TetrominoType currentTet = currentTetromino.getBlock(i, j);
-            win.draw_rectangle(p, blockSize, blockSize, tetromineToColor.at(currentTet));            
+            if(currentTet != TetrominoType::NONE) {
+                win.draw_rectangle(p, blockSize, blockSize, tetromineToColor.at(currentTet));
+            }
         }
     }
 } 
+
+
+// Game logic
+void TetrisWindow::fastenTetromino() {
+    // Find the relative index postion
+    int gridI = currentTetromino.getPosition().x / blockSize;
+    int gridJ = currentTetromino.getPosition().y / blockSize;
+
+    
+    for(int i = gridI; i - gridI < currentTetromino.getMatrixSize(); i++) {
+        for(int j = gridJ; j - gridJ < currentTetromino.getMatrixSize(); j++) {
+            int tetI = i-gridI;
+            int tetJ = j-gridJ;
+            
+            if(currentTetromino.getBlock(tetI, tetJ) != TetrominoType::NONE) {
+                gridMatrix.at(j).at(i) = currentTetromino.getBlock(tetI, tetJ);
+            }
+        }
+    }
+}
+

@@ -32,4 +32,11 @@ private:
     // Draw
     void drawCurrentTetromino(TetrisWindow& win);
 
+    void moveTetrominoDown() {currentTetromino.moveDown();}
+
+    // Game logic
+    // THis function moves the blocks from the current Tetromino
+    // to the gridMatrix
+    void fastenTetromino();
+
 };
