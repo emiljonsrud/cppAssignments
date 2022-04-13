@@ -15,7 +15,7 @@ public:
 private:
     // Some Game constants
     static constexpr int gridWidth = 10;
-    static constexpr int gridHeight = 60;
+    static constexpr int gridHeight = 30;
     static constexpr int blockSize = 30;
 
 
@@ -31,12 +31,20 @@ private:
 
     // Draw
     void drawCurrentTetromino(TetrisWindow& win);
-
+    void drawGridMatrix(TetrisWindow& win);
+    
     void moveTetrominoDown() {currentTetromino.moveDown();}
 
-    // Game logic
+    // # Game logic
     // THis function moves the blocks from the current Tetromino
     // to the gridMatrix
     void fastenTetromino();
 
+    // This function returns true if the tetromino has crashed
+    // in a wall or another tetromino
+    bool hasCrashed();
+
+    // This function corrects an attempted move by moving
+    // the current tetromino in a direction until it is legal
+    void correctAttemptedMove(int maxIter);
 };

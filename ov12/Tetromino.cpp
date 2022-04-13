@@ -25,18 +25,16 @@ const map<TetrominoType, vector<vector<int>>> initialMatrixMap {
 }, {
     TetrominoType::S,
     {
+        {0, 0, 0},
         {0, 1, 1},
-        {1, 1, 0},
-        {0, 0, 0}
+        {1, 1, 0}
     }
 }, {
     TetrominoType::Z,
     {
-        {0, 0, 0, 0, 0},
-        {0, 1, 1, 0, 0},
-        {0, 0, 1, 1, 0},
-        {0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0},
+        {0, 0, 0},
+        {1, 1, 0},
+        {0, 1, 1}
     }
 }, {
     TetrominoType::O,

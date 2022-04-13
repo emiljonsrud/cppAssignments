@@ -14,6 +14,7 @@ public:
     //#     Movement
     void rotateClockwise();
     void rotateCounterClockwise();
+    void moveUp() {topLeftCorner = Point{topLeftCorner.x, topLeftCorner.y-blockSize};}
     void moveDown() {topLeftCorner = Point{topLeftCorner.x, topLeftCorner.y+blockSize};}
     void moveLeft() {topLeftCorner = Point{topLeftCorner.x-blockSize, topLeftCorner.y};}
     void moveRight() {topLeftCorner = Point{topLeftCorner.x+blockSize, topLeftCorner.y};}

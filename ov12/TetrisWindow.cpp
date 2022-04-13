@@ -34,15 +34,15 @@ TetrisWindow::TetrisWindow(int dispXpos, int dispYpos, int dispWidth, int dispHe
         // Add the row to the gridmatrix
         gridMatrix.push_back(row);
     }
-  
-  generateRandomTetromino();
+    
+    generateRandomTetromino();
 }
 
 
 
 void TetrisWindow::run() {
     unsigned int framesSinceLastTetronimoMove = 0;
-    const unsigned int framesPerTetronimoMove = 20;
+    const unsigned int framesPerTetronimoMove = 40;
 
     while(!should_close()) { 
         framesSinceLastTetronimoMove++;
@@ -53,7 +53,8 @@ void TetrisWindow::run() {
         }
         drawCurrentTetromino(*this);
         handleInput();
-
+        
+        drawGridMatrix(*this);
         next_frame();
     }
 }
@@ -87,10 +88,14 @@ void TetrisWindow::handleInput() {
     if(currentDownKeyState && !lastDownKeyState) {currentTetromino.moveDown();}
     if(currentLeftKeyState && !lastLeftKeyState) {currentTetromino.moveLeft();}
     if(currentRightKeyState && !lastRightKeyState) {currentTetromino.moveRight();}
+
+    if(hasCrashed()) {correctAttemptedMove(5);}
+    
+    
     
     if(currentBKeyState && !lastBKeyState) {
-        cout << "Pressed B" << endl;
-        fastenTetromino();
+        // cout << "Pressed B" << endl;
+        cout << to_string(hasCrashed()) << endl;
     }
 
 
@@ -113,6 +118,7 @@ void TetrisWindow::generateRandomTetromino() {
     currentTetromino = Tetromino(startPos, randomTetType);
 }
 
+//#     DRAW
 void TetrisWindow::drawCurrentTetromino(TetrisWindow& win) {
     for(int i = 0; i < currentTetromino.getMatrixSize(); i++) {
         for(int j = 0; j < currentTetromino.getMatrixSize(); j++) {
@@ -129,13 +135,27 @@ void TetrisWindow::drawCurrentTetromino(TetrisWindow& win) {
         }
     }
 } 
+void TetrisWindow::drawGridMatrix(TetrisWindow& win) {
+    for(int i = 0; i < gridHeight; i++) {
+        for(int j = 0; j < gridWidth; j++) {
+            if(gridMatrix.at(i).at(j) != TetrominoType::NONE) {
+                win.draw_rectangle(
+                    Point{j*blockSize, i*blockSize},
+                    blockSize, blockSize,
+                    tetromineToColor.at(gridMatrix.at(i).at(j))
+                );
+            }
+        }
+    }
+}
+
 
 
 // Game logic
 void TetrisWindow::fastenTetromino() {
     // Find the relative index postion
-    int gridI = currentTetromino.getPosition().x / blockSize;
-    int gridJ = currentTetromino.getPosition().y / blockSize;
+    int gridI = currentTetromino.getPosition().y / blockSize;
+    int gridJ = currentTetromino.getPosition().x / blockSize;
 
     
     for(int i = gridI; i - gridI < currentTetromino.getMatrixSize(); i++) {
@@ -143,10 +163,84 @@ void TetrisWindow::fastenTetromino() {
             int tetI = i-gridI;
             int tetJ = j-gridJ;
             
-            if(currentTetromino.getBlock(tetI, tetJ) != TetrominoType::NONE) {
-                gridMatrix.at(j).at(i) = currentTetromino.getBlock(tetI, tetJ);
+            if(currentTetromino.blockExist(tetJ, tetI)) {
+                gridMatrix.at(i).at(j) = currentTetromino.getBlock(tetI, tetJ);
             }
         }
     }
+
 }
 
+bool TetrisWindow::hasCrashed() {
+
+    // Find the relative index postion
+    int gridOffsetI = currentTetromino.getPosition().y / blockSize;
+    int gridOffsetJ = currentTetromino.getPosition().x / blockSize;
+
+    // Iterate though all the blocks in the Tetromino matrix
+    for(int gridI = gridOffsetI; gridI - gridOffsetI < currentTetromino.getMatrixSize(); gridI++) {
+        for(int gridJ = gridOffsetJ; gridJ - gridOffsetJ < currentTetromino.getMatrixSize(); gridJ++) {
+            int tetI = gridI - gridOffsetI;
+            int tetJ = gridJ - gridOffsetJ;
+            
+            // bool isBlock = currentTetromino.blockExist(tetI, tetJ)
+
+            // We are only interested in this coordinate if a tetromino block is present
+            if(currentTetromino.blockExist(tetJ, tetI)) {
+                // Check if the block has crashed into the border
+                if(gridJ >= gridWidth or gridJ < 0) {return true;}
+                // Check if the block has crashed into the bottom
+                if(gridI >= gridHeight) {return true;}
+
+                // Check if the block has crashed into another tetromino
+                if(gridMatrix.at(gridI).at(gridJ) != TetrominoType::NONE) {return true;}
+            }
+        }
+    }
+    // If none of the blocks have colided, the tetromino has not crashed
+    return false;  
+}
+
+void TetrisWindow::correctAttemptedMove(int maxIter) {
+    // Set a hard-cap for maxIter, to avoid infinate runtime
+    // if(maxIter > 10) {return;}
+
+    // Start by attempting to move the tetromino right
+    for(int i = 0; i < maxIter; i++) {
+        currentTetromino.moveRight();
+        if(!hasCrashed()) {
+            cout << "Corrected " << to_string(i) << "steps to the right." << endl;
+            return;
+        }
+    }
+    
+    
+    // If this fails, attempt twice as many left moves
+    // as the tetromino is to the right
+    for(int i = -maxIter; i < maxIter; i++) {
+        currentTetromino.moveLeft();
+        if(!hasCrashed()) {
+            cout << "Corrected " << to_string(i) << "steps to the left." << endl;
+            return;
+        }
+    }
+
+    // Move the tetromino back to original postition
+    for(int i = -maxIter; i != 0; i++) {
+        currentTetromino.moveRight();
+    }
+    
+    // Finally attempt to move up
+    for(int i = 0; i < maxIter; i++) {
+        currentTetromino.moveUp();
+        if(!hasCrashed()){
+            cout << "Corrected " << to_string(i) << "steps to upwards." << endl;
+            return;
+        };
+    }
+    
+    // If the tetromino still has not been correcte, the 
+    // function is called again recursivley, with one more 
+    // allowed iteration
+    // correctAttemptedMove(maxIter++);
+}

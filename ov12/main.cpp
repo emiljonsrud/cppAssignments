@@ -9,7 +9,7 @@ int main()
 	srand(unsigned(time(nullptr)));
 	
     // Window constants
-    static constexpr int dispHeight = 800;
+    static constexpr int dispHeight = 950;
     static constexpr int dispWidth = 500;
     static constexpr int dispXpos = 400;
     static constexpr int dispYpos = 100;
