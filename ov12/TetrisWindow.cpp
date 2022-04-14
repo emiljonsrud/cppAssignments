@@ -89,13 +89,16 @@ void TetrisWindow::handleInput() {
     if(currentLeftKeyState && !lastLeftKeyState) {currentTetromino.moveLeft();}
     if(currentRightKeyState && !lastRightKeyState) {currentTetromino.moveRight();}
 
-    if(hasCrashed()) {correctAttemptedMove(5);}
+    // If the tetromino has crashed, the move is corrected by utilizing the 
+    // correntAttemptedMove() function.
+    if(hasCrashed()) {correctAttemptedMove(2);}
     
     
     
     if(currentBKeyState && !lastBKeyState) {
         // cout << "Pressed B" << endl;
-        cout << to_string(hasCrashed()) << endl;
+        // cout << to_string(hasCrashed()) << endl;
+        fastenTetromino();
     }
 
 
@@ -164,7 +167,7 @@ void TetrisWindow::fastenTetromino() {
             int tetJ = j-gridJ;
             
             if(currentTetromino.blockExist(tetJ, tetI)) {
-                gridMatrix.at(i).at(j) = currentTetromino.getBlock(tetI, tetJ);
+                gridMatrix.at(i).at(j) = currentTetromino.getBlock(tetJ, tetI);
             }
         }
     }
@@ -188,9 +191,11 @@ bool TetrisWindow::hasCrashed() {
             // We are only interested in this coordinate if a tetromino block is present
             if(currentTetromino.blockExist(tetJ, tetI)) {
                 // Check if the block has crashed into the border
-                if(gridJ >= gridWidth or gridJ < 0) {return true;}
+                if(gridJ >= gridWidth or gridJ < 0) {
+                    return true;}
                 // Check if the block has crashed into the bottom
-                if(gridI >= gridHeight) {return true;}
+                if(gridI >= gridHeight) {
+                    return true;}
 
                 // Check if the block has crashed into another tetromino
                 if(gridMatrix.at(gridI).at(gridJ) != TetrominoType::NONE) {return true;}
@@ -204,8 +209,29 @@ bool TetrisWindow::hasCrashed() {
 void TetrisWindow::correctAttemptedMove(int maxIter) {
     // Set a hard-cap for maxIter, to avoid infinate runtime
     // if(maxIter > 10) {return;}
+    
+    // Attempt to move the tetromino up
+    int numAttempts = 0;
+    for(int i = 0; i < maxIter; i++) {
+        // If the tetromino is about to be moved outside of the board, 
+        // the operation is aborted
+        if(currentTetromino.getPosition().y < 1) {break;}
 
-    // Start by attempting to move the tetromino right
+        currentTetromino.moveUp();
+        numAttempts++;
+        if(!hasCrashed()){
+            cout << "Corrected " << to_string(i) << "steps to upwards." << endl;
+            return;
+        };
+    }
+    // If this fails, the tetromino is moved back
+    for (int i = 0; i < numAttempts; i++) {
+        currentTetromino.moveDown();
+    }
+    
+    
+
+    // Attempt to move the tetromino right
     for(int i = 0; i < maxIter; i++) {
         currentTetromino.moveRight();
         if(!hasCrashed()) {
@@ -213,7 +239,6 @@ void TetrisWindow::correctAttemptedMove(int maxIter) {
             return;
         }
     }
-    
     
     // If this fails, attempt twice as many left moves
     // as the tetromino is to the right
@@ -230,14 +255,6 @@ void TetrisWindow::correctAttemptedMove(int maxIter) {
         currentTetromino.moveRight();
     }
     
-    // Finally attempt to move up
-    for(int i = 0; i < maxIter; i++) {
-        currentTetromino.moveUp();
-        if(!hasCrashed()){
-            cout << "Corrected " << to_string(i) << "steps to upwards." << endl;
-            return;
-        };
-    }
     
     // If the tetromino still has not been correcte, the 
     // function is called again recursivley, with one more 
