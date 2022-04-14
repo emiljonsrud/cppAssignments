@@ -86,39 +86,45 @@ void TetrisWindow::handleInput() {
     bool currentBKeyState = is_key_down(KeyboardKey::B);
     
     //      ROTATIONAL MOVEMENT
+    // If the tetromino has crashed after a move, an attempt to correct the move is made, if
+    // this does not work however, the move is reversed
     if(currentZKeyState && !lastZKeyState) {
         currentTetromino.rotateCounterClockwise();
-        if(hasCrashed()) {correctRotationalMove(2);}
+        if(hasCrashed()) {
+            try {correctRotationalMove(2);}
+            catch(runtime_error) {currentTetromino.rotateClockwise();}
+        }
     }
     if(currentUpKeyState && !lastUpKeyState) {
         currentTetromino.rotateClockwise();
-        if(hasCrashed()) {correctRotationalMove(2);}
+        if(hasCrashed()) {
+            try {correctRotationalMove(2);}
+            catch(runtime_error) {currentTetromino.rotateCounterClockwise();}
+        }
     }
     
     //      TRANSVERSAL MOVEMENT
     if(currentDownKeyState && !lastDownKeyState) {
         currentTetromino.moveDown();
         if(hasCrashed()){
-            correctDownMove(4);
+            try {correctDownMove(4);}
+            catch(runtime_error) {currentTetromino.moveUp();}
         } 
     }
     if(currentLeftKeyState && !lastLeftKeyState) {
         currentTetromino.moveLeft();
         if(hasCrashed()){
-            correctLeftMove(4);
+            try {correctLeftMove(4);}
+            catch(runtime_error) {currentTetromino.moveRight();}
         } 
     }
     if(currentRightKeyState && !lastRightKeyState) {
         currentTetromino.moveRight();
         if(hasCrashed()){
-            correctRightMove(4);
+            try {correctRightMove(4);}
+            catch(runtime_error) {currentTetromino.moveLeft();}
         } 
-    }
-
-    // If the tetromino has crashed, the move is corrected by utilizing the 
-    // correntAttemptedMove() function.
-    // if(hasCrashed()) {correctAttemptedMove(2);}
-    
+    }    
     
     
     if(currentBKeyState && !lastBKeyState) {
