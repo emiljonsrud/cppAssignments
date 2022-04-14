@@ -52,6 +52,7 @@ void TetrisWindow::run() {
             if(hasCrashed()) {
                 correctDownMove(3);
                 fastenTetromino();
+                removeFullRows();
                 generateRandomTetromino();
             }
            
@@ -203,8 +204,40 @@ void TetrisWindow::fastenTetromino() {
             }
         }
     }
-
 }
+void TetrisWindow::removeFullRows() {
+    // Itterate through the rows of the grid matrix to find full rows
+    for(int currentRow = 0; currentRow < gridHeight; currentRow++) {
+        // Create a counter for counting full rows
+        int blocks = 0;
+
+        // Itterate along the row
+        for(int currentCol = 0; currentCol < gridWidth; currentCol++) {
+            if(gridMatrix.at(currentRow).at(currentCol) != TetrominoType::NONE) {blocks++;}
+        }
+        // If the whole row is filled, it is to be removed
+        if(blocks == gridWidth) {
+            // This is done by moving all the rows one index down
+            for(int i = currentRow; i > 0; i--) {
+                for(int j = 0; j < gridWidth; j++) {
+                    gridMatrix.at(i).at(j) = gridMatrix.at(i-1).at(j);
+                }
+                // Provides a cool animation
+                drawGridMatrix(*this);
+            }
+            // Clear the top row
+            for(int j = 0; j < gridWidth; j++) {gridMatrix.at(0).at(j) = TetrominoType::NONE;}
+            
+        }
+        
+        
+    }
+    
+    
+}
+
+
+
 
 bool TetrisWindow::hasCrashed() {
 
@@ -238,6 +271,7 @@ bool TetrisWindow::hasCrashed() {
     return false;  
 }
 
+//  ##  MOVE CORRECTONS
 void TetrisWindow::correctLeftMove(int maxIter) {
     // Set a hard-cap for maxIter, to avoid infinate runtime
     // if(maxIter > 10) {return;}

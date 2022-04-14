@@ -39,17 +39,19 @@ private:
     // THis function moves the blocks from the current Tetromino
     // to the gridMatrix
     void fastenTetromino();
-
+    void removeFullRows();
+    
     // This function returns true if the tetromino has crashed
     // in a wall or another tetromino
     bool hasCrashed();
 
+    // ## Move corrections
     // These functions corrects an attempted move by moving
     // the current tetromino in a direction until it is legal
     void correctLeftMove(int maxIter);
     void correctRightMove(int maxIter);
     void correctDownMove(int maxIter);
-
     void correctRotationalMove(int maxIter);
+
 
 };
