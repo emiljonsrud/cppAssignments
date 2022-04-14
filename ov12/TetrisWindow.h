@@ -44,9 +44,12 @@ private:
     // in a wall or another tetromino
     bool hasCrashed();
 
-    // This function corrects an attempted move by moving
+    // These functions corrects an attempted move by moving
     // the current tetromino in a direction until it is legal
     void correctLeftMove(int maxIter);
     void correctRightMove(int maxIter);
     void correctDownMove(int maxIter);
+
+    void correctRotationalMove(int maxIter);
+
 };

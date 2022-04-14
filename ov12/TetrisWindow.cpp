@@ -50,7 +50,7 @@ void TetrisWindow::run() {
             framesSinceLastTetronimoMove = 0;
             moveTetrominoDown();
             if(hasCrashed()) {
-                correctDownMove(1);
+                correctDownMove(3);
                 fastenTetromino();
                 generateRandomTetromino();
             }
@@ -85,11 +85,17 @@ void TetrisWindow::handleInput() {
 
     bool currentBKeyState = is_key_down(KeyboardKey::B);
     
+    //      ROTATIONAL MOVEMENT
     if(currentZKeyState && !lastZKeyState) {
         currentTetromino.rotateCounterClockwise();
+        if(hasCrashed()) {correctRotationalMove(2);}
     }
-
-    if(currentUpKeyState && !lastUpKeyState) {currentTetromino.rotateClockwise();}
+    if(currentUpKeyState && !lastUpKeyState) {
+        currentTetromino.rotateClockwise();
+        if(hasCrashed()) {correctRotationalMove(2);}
+    }
+    
+    //      TRANSVERSAL MOVEMENT
     if(currentDownKeyState && !lastDownKeyState) {
         currentTetromino.moveDown();
         if(hasCrashed()){
@@ -124,7 +130,7 @@ void TetrisWindow::handleInput() {
 
     lastZKeyState = currentZKeyState;
     lastUpKeyState = currentUpKeyState;
-    lastDownKeyState = currentDownKeyState;
+    // lastDownKeyState = currentDownKeyState;
     lastLeftKeyState = currentLeftKeyState;
     lastRightKeyState = currentRightKeyState;
 
@@ -254,21 +260,55 @@ void TetrisWindow::correctRightMove(int maxIter) {
 }
 void TetrisWindow::correctDownMove(int maxIter) {
     // Attempt to move the tetromino up, while recording number of attemts
-    int numAttempts = 0;
     for(int i = 0; i < maxIter; i++) {
         // If the tetromino is about to be moved outside of the board, 
         // the operation is aborted
-        if(currentTetromino.getPosition().y < 1) {break;}
+        if(currentTetromino.getPosition().y < 1) {
+            break;
+        }
 
         currentTetromino.moveUp();
-        numAttempts++;
         if(!hasCrashed()){
             cout << "Corrected " << to_string(i) << "steps to upwards." << endl;
             return;
         };
+        throw runtime_error("Upwards correction failed");
     }
 
     // If this operation fails, the game is likely lost
-    throw runtime_error("Top of the board is reached");
-    
+    throw runtime_error("Top of the board is reached");   
+}
+void TetrisWindow::correctRotationalMove(int maxIter) {
+    // Start by attemting a down move:
+    currentTetromino.moveDown();
+    if(!hasCrashed()) {return;}
+    else {currentTetromino.moveUp();}
+
+
+
+    // This loop will gradually try to correct the tetromino
+    // in all directions
+    for(int moveAttempts = 1; moveAttempts < 4; moveAttempts++) {
+        // Attempt upwards correction
+        try {correctDownMove(moveAttempts); return;} 
+        catch(runtime_error) {
+            // Move the tetromino vack to the original positon
+            for(int i = 0; i < moveAttempts; i++) {currentTetromino.moveDown();}
+        }
+        
+        // Attempt a left correction
+        try{correctLeftMove(moveAttempts); return;} 
+        catch(runtime_error) {
+            // Move the tetromino back to the original position
+            for(int i = 0; i < moveAttempts; i++) {currentTetromino.moveLeft();}
+        }
+
+        // Attempt right correction
+        try {correctRightMove(moveAttempts); return;} 
+        catch (runtime_error) {
+            // Move the tetromino back to the original position
+            for(int i = 0; i < moveAttempts; i++) {currentTetromino.moveRight();}
+        }
+    }
+    throw runtime_error("Rotation correction failed");
 }
