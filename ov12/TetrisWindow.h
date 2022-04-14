@@ -46,5 +46,7 @@ private:
 
     // This function corrects an attempted move by moving
     // the current tetromino in a direction until it is legal
-    void correctAttemptedMove(int maxIter);
+    void correctLeftMove(int maxIter);
+    void correctRightMove(int maxIter);
+    void correctDownMove(int maxIter);
 };

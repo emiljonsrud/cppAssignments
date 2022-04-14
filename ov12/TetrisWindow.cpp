@@ -49,6 +49,11 @@ void TetrisWindow::run() {
         if(framesSinceLastTetronimoMove >= framesPerTetronimoMove) {
             framesSinceLastTetronimoMove = 0;
             moveTetrominoDown();
+            if(hasCrashed()) {
+                correctDownMove(1);
+                fastenTetromino();
+                generateRandomTetromino();
+            }
            
         }
         drawCurrentTetromino(*this);
@@ -85,13 +90,28 @@ void TetrisWindow::handleInput() {
     }
 
     if(currentUpKeyState && !lastUpKeyState) {currentTetromino.rotateClockwise();}
-    if(currentDownKeyState && !lastDownKeyState) {currentTetromino.moveDown();}
-    if(currentLeftKeyState && !lastLeftKeyState) {currentTetromino.moveLeft();}
-    if(currentRightKeyState && !lastRightKeyState) {currentTetromino.moveRight();}
+    if(currentDownKeyState && !lastDownKeyState) {
+        currentTetromino.moveDown();
+        if(hasCrashed()){
+            correctDownMove(4);
+        } 
+    }
+    if(currentLeftKeyState && !lastLeftKeyState) {
+        currentTetromino.moveLeft();
+        if(hasCrashed()){
+            correctLeftMove(4);
+        } 
+    }
+    if(currentRightKeyState && !lastRightKeyState) {
+        currentTetromino.moveRight();
+        if(hasCrashed()){
+            correctRightMove(4);
+        } 
+    }
 
     // If the tetromino has crashed, the move is corrected by utilizing the 
     // correntAttemptedMove() function.
-    if(hasCrashed()) {correctAttemptedMove(2);}
+    // if(hasCrashed()) {correctAttemptedMove(2);}
     
     
     
@@ -206,11 +226,34 @@ bool TetrisWindow::hasCrashed() {
     return false;  
 }
 
-void TetrisWindow::correctAttemptedMove(int maxIter) {
+void TetrisWindow::correctLeftMove(int maxIter) {
     // Set a hard-cap for maxIter, to avoid infinate runtime
     // if(maxIter > 10) {return;}
     
-    // Attempt to move the tetromino up
+    // Attempt to move the tetromino right
+    for(int i = 0; i < maxIter; i++) {
+        currentTetromino.moveRight();
+        if(!hasCrashed()) {
+            cout << "Corrected " << to_string(i) << "steps to the right." << endl;
+            return;
+        }
+    }
+    // If this fails, something is broken
+    throw runtime_error("Right correction failed");
+}
+void TetrisWindow::correctRightMove(int maxIter) {
+    for(int i = 0; i < maxIter; i++) {
+        currentTetromino.moveLeft();
+        if(!hasCrashed()) {
+            cout << "Corrected " << to_string(i) << "steps to the left." << endl;
+            return;
+        }
+    }
+    // If this fails, something is broken
+    throw runtime_error("Right correction failed");
+}
+void TetrisWindow::correctDownMove(int maxIter) {
+    // Attempt to move the tetromino up, while recording number of attemts
     int numAttempts = 0;
     for(int i = 0; i < maxIter; i++) {
         // If the tetromino is about to be moved outside of the board, 
@@ -224,40 +267,8 @@ void TetrisWindow::correctAttemptedMove(int maxIter) {
             return;
         };
     }
-    // If this fails, the tetromino is moved back
-    for (int i = 0; i < numAttempts; i++) {
-        currentTetromino.moveDown();
-    }
-    
-    
 
-    // Attempt to move the tetromino right
-    for(int i = 0; i < maxIter; i++) {
-        currentTetromino.moveRight();
-        if(!hasCrashed()) {
-            cout << "Corrected " << to_string(i) << "steps to the right." << endl;
-            return;
-        }
-    }
+    // If this operation fails, the game is likely lost
+    throw runtime_error("Top of the board is reached");
     
-    // If this fails, attempt twice as many left moves
-    // as the tetromino is to the right
-    for(int i = -maxIter; i < maxIter; i++) {
-        currentTetromino.moveLeft();
-        if(!hasCrashed()) {
-            cout << "Corrected " << to_string(i) << "steps to the left." << endl;
-            return;
-        }
-    }
-
-    // Move the tetromino back to original postition
-    for(int i = -maxIter; i != 0; i++) {
-        currentTetromino.moveRight();
-    }
-    
-    
-    // If the tetromino still has not been correcte, the 
-    // function is called again recursivley, with one more 
-    // allowed iteration
-    // correctAttemptedMove(maxIter++);
 }
